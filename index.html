@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Green Roof Implementation Support Map for Inner Melbourne">
+  <title>Green Roof Implementation Support Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">GR</div>
+    <div>
+      <h1>Green Roof Implementation Support Map</h1>
+      <p>Inner Melbourne decision-support prototype</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button id="resetBtn" type="button">Reset view</button>
+    <button id="aboutBtn" type="button">About</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="workflow-card">
+      <div class="eyebrow">Planning workflow</div>
+      <div class="workflow">
+        <span>Need</span><b>→</b><span>Candidate roofs</span><b>→</b><span>Scenarios</span>
+      </div>
+      <p>Explore the evidence behind intervention need, inspect individual candidate roofs, then compare implementation scenarios.</p>
+    </div>
+
+    <section class="panel">
+      <div class="panel-title"><span class="step">01</span><h2>Input factor</h2><small>one at a time</small></div>
+      <label><input type="radio" name="factor" value="none" checked> None</label>
+      <label><input type="radio" name="factor" value="population"> Population Density</label>
+      <label><input type="radio" name="factor" value="seifa"> Socioeconomic Disadvantage (SEIFA IRSD)</label>
+      <label><input type="radio" name="factor" value="ndvi"> Vegetation Need (NDVI)</label>
+      <label><input type="radio" name="factor" value="lst"> Land Surface Temperature</label>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title"><span class="step">02</span><h2>Combined analysis</h2></div>
+      <label class="switch-row">
+        <span>Green Roof Intervention Need</span>
+        <input id="needToggle" type="checkbox" checked>
+        <span class="switch"></span>
+      </label>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title"><span class="step">03</span><h2>Building output</h2></div>
+      <label class="switch-row">
+        <span>Green Roof Candidates</span>
+        <input id="candidateToggle" type="checkbox">
+        <span class="switch"></span>
+      </label>
+      <p class="hint">Turn this on, then click any roof to inspect all available attributes.</p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title"><span class="step">04</span><h2>Implementation scenario</h2><small>one at a time</small></div>
+      <label><input type="radio" name="scenario" value="none" checked> None</label>
+      <label><input type="radio" name="scenario" value="scenario1"> Scenario 1 — Priority / Very High</label>
+      <label><input type="radio" name="scenario" value="scenario2"> Scenario 2 — Targeted / High+</label>
+      <label><input type="radio" name="scenario" value="scenario3"> Scenario 3 — Broad / Moderate+</label>
+    </section>
+
+    <section class="panel note-panel">
+      <strong>Screening tool only</strong>
+      <p>Candidate roofs require further structural, waterproofing, drainage, ownership, access, cost and site feasibility assessment.</p>
+    </section>
+  </aside>
+
+  <main class="map-shell">
+    <div id="map"></div>
+
+    <div id="loading" class="loading hidden">
+      <span class="spinner"></span>
+      <div><strong id="loadingTitle">Loading layer…</strong><small id="loadingText">Please wait</small></div>
+    </div>
+
+    <div id="legend" class="legend"></div>
+
+    <aside id="roofPanel" class="roof-panel hidden" aria-live="polite">
+      <div class="roof-panel-head">
+        <div>
+          <div class="eyebrow">Selected feature</div>
+          <h2>Green Roof Candidate</h2>
+        </div>
+        <button id="closeRoofPanel" type="button" aria-label="Close roof information">×</button>
+      </div>
+      <div id="roofSummary"></div>
+      <div class="attribute-heading">
+        <h3>All available attributes</h3>
+        <button id="toggleAllBtn" type="button">Show all</button>
+      </div>
+      <div id="roofAttributes" class="attribute-list"></div>
+    </aside>
+  </main>
+</div>
+
+<div id="aboutModal" class="modal hidden">
+  <div class="modal-card">
+    <button id="closeAbout" type="button">×</button>
+    <div class="eyebrow">About the prototype</div>
+    <h2>Green Roof Implementation Support Map</h2>
+    <p>This prototype combines population, SEIFA IRSD, NDVI and land-surface temperature to identify higher green-roof intervention need, then links that need to individual candidate roofs and implementation scenarios.</p>
+    <p>The map supports prioritisation and further investigation rather than automatic implementation decisions.</p>
+    <div class="modal-note"><strong>Scenario outputs:</strong> cooling is illustrative and literature-derived, not a calibrated prediction of future local air temperature.</div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js?v=candidate8"></script>
+</body>
+</html>
