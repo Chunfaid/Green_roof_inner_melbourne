@@ -326,6 +326,7 @@ async function init(){
  }catch(e){console.error(e);map.setView(CENTER,12)}
 }
 document.querySelectorAll('[data-mode]').forEach(el=>el.addEventListener('click',()=>changeMode(el.dataset.mode)));
+document.querySelectorAll('[data-next-mode]').forEach(el=>el.addEventListener('click',()=>changeMode(el.dataset.nextMode)));
 document.querySelectorAll('input[name=factor]').forEach(el=>el.addEventListener('change',()=>{
  if(!el.checked)return;currentFactor=el.value;changeMode('need');
 }));
@@ -346,5 +347,12 @@ const modal=document.getElementById('aboutModal');
 document.getElementById('aboutBtn').addEventListener('click',()=>modal.classList.remove('hidden'));
 document.getElementById('closeAbout').addEventListener('click',()=>modal.classList.add('hidden'));
 modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.add('hidden')});
+const helpModal=document.getElementById('helpModal');
+document.getElementById('helpBtn').addEventListener('click',()=>helpModal.classList.remove('hidden'));
+document.getElementById('closeHelp').addEventListener('click',()=>helpModal.classList.add('hidden'));
+document.getElementById('startExploring').addEventListener('click',()=>{helpModal.classList.add('hidden');changeMode('need')});
+helpModal.addEventListener('click',e=>{if(e.target===helpModal)helpModal.classList.add('hidden')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){modal.classList.add('hidden');helpModal.classList.add('hidden')}});
+
 
 init();
