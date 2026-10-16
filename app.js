@@ -140,7 +140,7 @@ async function ensure(key){
         }
       }
     });
-    registry[key]={layer,c};
+    registry[key]={layer,c,featureData:c.kind==='scenario'?data:null};
     if(key==='boundary'){const b=layer.getBounds();if(b.isValid())studyBounds=b}
     return registry[key];
   }finally{hideLoading()}
@@ -184,7 +184,7 @@ function renderRoofPanel(props){
   const prob=first(props,['roof_prob','roof prob']);
 
   summary.innerHTML=`
-    ${priority?`<span class="priority-badge" style="background:${priorityColor(priority)}">${esc(priority)}</span>`:''}
+    ${priority!==null?`<span class="priority-badge" style="background:${priorityColor(priority)}">${esc(priorityClass(priority))} priority</span>`:''}
     <div class="summary-grid">
       <div class="summary-card"><span>Council</span><strong>${esc(council??'Not available')}</strong></div>
       <div class="summary-card"><span>Roof area</span><strong>${area!==null?esc(fmt(area,1))+' m²':'Not available'}</strong></div>
@@ -262,6 +262,16 @@ function updateLegend(){
        c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#d9d9d9','Not assessed');
  }
 }
+function updateScenarioMetrics(data){
+  const items=Array.isArray(data?.features)?data.features:[];
+  const vals=items.map(f=>first(f.properties||{},['cooling_C','Cooling_C','cooling_c']))
+    .filter(v=>v!==null&&v!==undefined&&v!=='')
+    .map(Number).filter(Number.isFinite);
+  const fmtN=new Intl.NumberFormat('en-AU');
+  document.getElementById('scenarioCells').textContent=fmtN.format(items.length);
+  document.getElementById('scenarioModelled').textContent=fmtN.format(vals.length);
+  document.getElementById('scenarioMean').textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)+' °C':'Not available';
+}
 function setModeUi(){
  modes.forEach(mode=>{
   document.getElementById(mode==='need'?'needControls':mode==='roofs'?'roofControls':'scenarioControls').classList.toggle('hidden',mode!==currentMode);
@@ -286,6 +296,7 @@ async function renderMode(){
    const target=await ensure(key);
    if(seq!==requestVersion)return;
    target.layer.addTo(map);
+   if(currentMode==='scenarios'&&target.featureData)updateScenarioMetrics(target.featureData);
    if(visible('boundary'))registry.boundary.layer.bringToFront();
    if(key==='candidates')target.layer.bringToFront();
    updateLegend();
