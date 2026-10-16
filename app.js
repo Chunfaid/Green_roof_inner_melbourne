@@ -247,6 +247,12 @@ let currentMode='need',currentFactor='need',currentScenario=1,requestVersion=0;
 function visible(k){return !!(registry[k]&&map.hasLayer(registry[k].layer))}
 function remove(k){if(visible(k))map.removeLayer(registry[k].layer)}
 function li(color,label){return `<div class="legend-item"><span class="swatch" style="background:${color}"></span><span>${label}</span></div>`}
+function updateMapContext(){
+ const el=document.getElementById('mapContext');if(!el)return;
+ if(currentMode==='roofs')el.textContent='Potential green roofs · building scale';
+ else if(currentMode==='scenarios')el.textContent='Scenario '+currentScenario+' · modelled cooling';
+ else el.textContent=(cfg[currentFactor]?.title||'Cooling need')+' · 250 m grid';
+}
 function updateLegend(){
  const key=currentMode==='roofs'?'candidates':currentMode==='scenarios'?'scenario'+currentScenario:currentFactor;
  const el=document.getElementById('legend');
@@ -273,6 +279,7 @@ function updateScenarioMetrics(data){
   document.getElementById('scenarioMean').textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)+' °C':'Not available';
 }
 function setModeUi(){
+ updateMapContext();
  modes.forEach(mode=>{
   document.getElementById(mode==='need'?'needControls':mode==='roofs'?'roofControls':'scenarioControls').classList.toggle('hidden',mode!==currentMode);
  });
