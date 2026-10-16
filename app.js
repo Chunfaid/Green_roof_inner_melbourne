@@ -51,7 +51,7 @@ function factorValue(props, config){
 function n(v){const x=Number(v);return Number.isFinite(x)?x:null}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function scoreIndex(v){const x=n(v);if(x===null)return null;return Math.max(0,Math.min(4,Math.round(x)-1))}
-function colorFromScore(v,palette){const i=scoreIndex(v);return i===null?'#d9d9d9':palette[i]}
+function colorFromScore(v,palette){const x=v===null||v===undefined||v===''?null:Number(v);if(x===null||!Number.isFinite(x))return '#d9d9d9';if(x===0)return '#a0aaa6';const i=scoreIndex(x);return i===null?'#d9d9d9':palette[i]}
 function priorityClass(v){
   if(v===null || v===undefined || v==='') return 'Not assessed';
 
@@ -90,7 +90,7 @@ function style(kind,p,c){
   if(kind==='weighted'){
     const raw=first(p,c.fields);
     const val=raw===null?null:Number(raw);
-    return {color:'rgba(255,255,255,.65)',weight:.25,fillColor:val!==null&&Number.isFinite(val)?colorFromScore(val,cfg.need.palette):'#d9d9d9',fillOpacity:val!==null&&Number.isFinite(val)?.82:.20};
+    return {color:'rgba(255,255,255,.65)',weight:.25,fillColor:colorFromScore(val,cfg.need.palette),fillOpacity:val!==null&&Number.isFinite(val)?.82:.45};
   }
   if(kind==='candidate'){
     const pr=first(p,['priority c','priority_c','priority','Priority']);
@@ -286,11 +286,11 @@ function updateLegend(){
     const c=cfg[key];
     el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
       cfg.need.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+
-      li('#d9d9d9','Data not complete');
+      li('#a0aaa6','Not assessed')+li('#d9d9d9','Incomplete data');
  }else{
     const c=cfg[key];
     el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
-       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#d9d9d9','Data not complete');
+       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#a0aaa6','Not assessed')+li('#d9d9d9','Incomplete data');
  }
 }
 function updateScenarioMetrics(data){
