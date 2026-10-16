@@ -42,3 +42,30 @@ button,input{font:inherit}
 .scenario-description{background:#e7f2eb;border:1px solid #d0e4d7;padding:10px;border-radius:9px;margin-top:11px}
 .scenario-description strong{font-size:12px;color:#123f34}
 .scenario-description p{font-size:11.5px;margin:4px 0 0}
+
+/* Focused single-map workflow */
+.layout{grid-template-columns:350px 1fr}
+.sidebar{padding:16px}
+.workflow-card{padding:18px}
+.intro-title{font-size:18px;line-height:1.28;margin:7px 0;color:var(--forest)}
+.mode-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.mode-tab{font-size:11px;cursor:pointer;border:1px solid #d7e3dc;background:#fff;padding:10px 4px;border-radius:9px;font-weight:700;color:#536c5e;white-space:nowrap}
+.mode-tab span{display:block;font-size:10px;color:inherit;margin-bottom:4px}
+.mode-tab.active{background:#1a5442;color:#fff;border-color:#1a5442;box-shadow:0 2px 7px #183b2c22}
+.mode-tab:focus-visible{outline:3px solid #e3ba65;outline-offset:2px}
+.mode-panel{padding:17px}
+.mode-panel.hidden{display:none}
+.mode-panel h2{font-size:16px}
+.mode-panel p{font-size:12.5px;line-height:1.55}
+.mode-options{display:grid;gap:4px;margin:12px 0}
+.mode-options label{display:flex;align-items:center;gap:9px;padding:10px 8px;border-radius:8px;font-size:12.5px;cursor:pointer}
+.mode-options label:has(input:checked){background:#e5f0ea;color:#164c37}
+.mode-options input{accent-color:#1b6d50}
+.method-note{border-top:1px solid #e2e9e4;padding-top:13px;margin-top:10px}
+.method-note summary{font-size:12px;font-weight:700;cursor:pointer;color:#27634d}
+.tip{background:#eaf3ee;border-radius:9px;padding:12px;color:#416855!important;margin:12px 0!important}
+.secondary-action{border:1px solid #cbded2;background:#fff;color:#15583d;border-radius:9px;padding:10px;cursor:pointer}
+#scenarioSlider{margin-top:18px}
+.scenario-steps{padding:4px 0;gap:4px;font-size:10px}
+.legend{max-width:min(280px,calc(100% - 30px))}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.mode-tab{font-size:12px}}
