@@ -91,3 +91,31 @@ button,input{font:inherit}
 .mode-tab:hover:not(.active){border-color:#83a997;background:#f6faf7}
 .mode-options label:hover{background:#f0f6f1}
 @media(max-width:700px){.map-context{left:10px;bottom:10px;max-width:calc(100% - 215px);font-size:10px;padding:7px}.legend{min-width:175px;right:9px;bottom:9px;padding:9px}}
+
+/* Public-facing information architecture and editorial polish */
+:root{--muted:#596c62;--line:#d8e4dc}
+.topbar{box-shadow:0 3px 16px rgba(8,36,24,.12)}
+.top-actions button{font-size:12px;font-weight:650}
+.workflow-card{background:linear-gradient(145deg,#fff,#f5faf7);border-color:#d4e4d9}
+.workflow-card p{font-size:12.5px;line-height:1.55}
+.project-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
+.project-meta span{font-size:10px;font-weight:700;background:#e6f1e9;border-radius:30px;padding:5px 9px;color:#29604a}
+.panel{box-shadow:0 1px 3px rgba(26,59,41,.025)}
+.mode-panel p{font-size:12.5px;line-height:1.57}
+.mode-panel p strong{color:#204d3c}
+.primary-action{display:block;width:100%;margin-top:16px;border:0;border-radius:9px;padding:11px 12px;background:#19543f;color:#fff;font-size:12px;font-weight:750;cursor:pointer;text-align:center}
+.primary-action:hover{background:#267254}
+.method-note{margin-top:12px;padding:11px 0 0}
+.method-note summary{font-size:12px;line-height:1.35}
+.method-note p{padding:4px 0 4px 10px;color:#5e7267}
+.mode-options label{min-height:40px}
+.legend{box-shadow:0 8px 26px rgba(30,51,38,.13);border-color:#d3ded7}
+.modal-card{max-height:min(82vh,780px);overflow:auto}
+.modal-card h3{font-size:14px;margin:19px 0 5px;color:#1d523e}
+.guide-steps{display:grid;gap:10px;margin:17px 0}
+.guide-steps>div{display:flex;gap:13px;background:#f1f7f3;padding:13px;border-radius:10px}
+.guide-steps b{color:#1c6245;font-size:15px}
+.guide-steps span{font-size:12px;line-height:1.5;color:#5a6d62}
+.guide-steps span strong{display:block;color:#184733;font-size:13px;margin-bottom:3px}
+button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-offset:2px}
+@media(max-width:650px){.top-actions{gap:4px}.top-actions button{font-size:10px;padding:7px}.brand h1{font-size:14px}.sidebar{padding:11px}}
