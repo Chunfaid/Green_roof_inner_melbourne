@@ -34,3 +34,11 @@ button,input{font:inherit}
 .attribute-list{margin-top:8px;border:1px solid var(--line);border-radius:10px;overflow:hidden}.attribute-row{display:grid;grid-template-columns:145px 1fr;gap:10px;padding:7px 9px;font-size:10.5px;border-bottom:1px solid #edf2ef}.attribute-row:last-child{border-bottom:0}.attribute-row:nth-child(even){background:#fafcfa}.attribute-key{color:#708078;overflow-wrap:anywhere}.attribute-value{font-weight:600;overflow-wrap:anywhere}.attribute-row.extra.hidden{display:none}
 .modal{position:fixed;inset:0;z-index:2000;background:rgba(10,25,20,.52);display:grid;place-items:center;padding:20px;backdrop-filter:blur(3px)}.modal.hidden{display:none}.modal-card{width:min(560px,100%);background:#fff;border-radius:16px;padding:25px;position:relative;box-shadow:0 18px 60px rgba(0,0,0,.28)}.modal-card h2{color:var(--forest);margin:7px 0 10px}.modal-card p{font-size:13px;line-height:1.55;color:#53635c}.modal-card>button{position:absolute;right:11px;top:7px;border:0;background:transparent;font-size:28px;color:#6d7b75;cursor:pointer}.modal-note{background:#f5f9f7;border:1px solid var(--line);border-radius:10px;padding:11px;font-size:11.5px;color:#47564f}
 @media(max-width:900px){body{overflow:auto}.topbar{height:auto;min-height:72px;padding:11px 13px;gap:8px}.brand-mark{display:none}.brand h1{font-size:16px}.brand p{font-size:10px}.top-actions button{font-size:10px;padding:7px 8px}.layout{grid-template-columns:1fr;height:auto}.map-shell{height:72vh}.sidebar{border-right:0;border-bottom:1px solid var(--line)}.roof-panel{width:calc(100% - 24px);right:12px;top:12px;max-height:calc(100% - 24px)}}
+
+/* Clarity improvements */
+.help-text{font-size:11.5px;line-height:1.55;color:#597067;margin:6px 0 10px}
+#scenarioSlider{width:100%;accent-color:#25705a;margin:12px 0 0;cursor:pointer}
+.scenario-steps{display:flex;justify-content:space-between;font-size:11px;color:#53695f;padding:0 6px}
+.scenario-description{background:#e7f2eb;border:1px solid #d0e4d7;padding:10px;border-radius:9px;margin-top:11px}
+.scenario-description strong{font-size:12px;color:#123f34}
+.scenario-description p{font-size:11.5px;margin:4px 0 0}
