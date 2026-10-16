@@ -90,7 +90,7 @@ function style(kind,p,c){
   if(kind==='weighted'){
     const raw=first(p,c.fields);
     const val=raw===null?null:Number(raw);
-    return {color:'rgba(255,255,255,.65)',weight:.25,fillColor:val!==null&&Number.isFinite(val)?priorityColor(val):'#d9d9d9',fillOpacity:val!==null&&Number.isFinite(val)?.82:.20};
+    return {color:'rgba(255,255,255,.65)',weight:.25,fillColor:val!==null&&Number.isFinite(val)?colorFromScore(val,cfg.need.palette):'#d9d9d9',fillOpacity:val!==null&&Number.isFinite(val)?.82:.20};
   }
   if(kind==='candidate'){
     const pr=first(p,['priority c','priority_c','priority','Priority']);
@@ -284,12 +284,13 @@ function updateLegend(){
       li('#eff3ff','&lt;1.0')+li('#bdd7e7','1.0–&lt;1.8')+li('#6baed6','1.8–&lt;2.6')+li('#3182bd','2.6–&lt;3.4')+li('#08519c','≥3.4')+li('#d9d9d9','No modelled value');
  }else if(cfg[key].kind==='weighted'){
     const c=cfg[key];
-    el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+' · common score thresholds</div>'+
-      li('#fee8c8','Very Low · below 2')+li('#fdbb84','Low · 2–&lt;3')+li('#fc8d59','Moderate · 3–&lt;4')+li('#d7301f','High · 4–&lt;4.5')+li('#7f0000','Very High · 4.5+')+li('#d9d9d9','No valid score');
+    el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
+      cfg.need.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+
+      li('#d9d9d9','Data not complete');
  }else{
     const c=cfg[key];
     el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
-       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#d9d9d9','Not assessed');
+       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#d9d9d9','Data not complete');
  }
 }
 function updateScenarioMetrics(data){
