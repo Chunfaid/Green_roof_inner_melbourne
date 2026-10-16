@@ -1,6 +1,6 @@
 const CENTER=[-37.8136,144.9631];
 const map=L.map('map',{preferCanvas:true}).setView(CENTER,12);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:20,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:20,attribution:'&copy; OpenStreetMap contributors &copy; CARTO'}).addTo(map);
 
 const cfg={
   boundary:{file:'data/Project_boundaries.geojson',kind:'boundary',title:'Project Boundary'},
@@ -82,7 +82,7 @@ function coolingColor(v){const x=n(v);if(x===null)return'#d9d9d9';if(x<1)return'
 
 function style(kind,p,c){
   if(kind==='boundary')return{color:'#245b4a',weight:2.3,fillOpacity:0};
-  if(kind==='factor'||kind==='need'){const value=factorValue(p,c);return{color:'rgba(255,255,255,.65)',weight:.35,fillColor:colorFromScore(value,c.palette),fillOpacity:kind==='need'?.48:.67}}
+  if(kind==='factor'||kind==='need'){const value=factorValue(p,c);return{color:'rgba(255,255,255,.65)',weight:.20,fillColor:colorFromScore(value,c.palette),fillOpacity:kind==='need'?.82:.85}}
   if(kind==='candidate'){
     const pr=first(p,['priority c','priority_c','priority','Priority']);
     return{
@@ -92,7 +92,7 @@ function style(kind,p,c){
       fillOpacity:.90
     };
   }
-  if(kind==='scenario'){const value=first(p,['cooling_C','Cooling_C','cooling_c']);return{color:'rgba(255,255,255,.65)',weight:.35,fillColor:coolingColor(value),fillOpacity:value===null?.08:.68}}
+  if(kind==='scenario'){const value=first(p,['cooling_C','Cooling_C','cooling_c']);return{color:'rgba(255,255,255,.65)',weight:.35,fillColor:coolingColor(value),fillOpacity:value===null?.08:.82}}
 }
 
 function fmt(v,d=2){
@@ -235,109 +235,86 @@ function closeRoofPanel(){
   selectedRoofLayer=null;selectedProps=null;
 }
 
-let interactionToken=0;
+
+const modes=['need','roofs','scenarios'];
+const keys=['population','seifa','ndvi','lst','need','candidates','scenario1','scenario2','scenario3'];
 const scenarioInfo={
-  none:['No scenario selected','Choose a scenario to view illustrative modelled cooling.'],
   scenario1:['Scenario 1 — Priority','Very High priority areas only.'],
   scenario2:['Scenario 2 — Targeted','Very High and High priority areas.'],
   scenario3:['Scenario 3 — Broad','Very High, High and Moderate priority areas.']
 };
-function describeScenario(key){
- const info=scenarioInfo[key];
- document.getElementById('scenarioTitle').textContent=info[0];
- document.getElementById('scenarioHelp').textContent=info[1];
-}
-function fadeGridWhenRoofsShown(){
- const roofShown=visible('candidates');
- ['population','seifa','ndvi','lst','need','scenario1','scenario2','scenario3'].forEach(k=>{
-   if(!visible(k))return;
-   registry[k].layer.eachLayer(l=>{
-      if(typeof l.setStyle==='function') {
-        const normal=style(cfg[k].kind,l.feature?.properties||{},cfg[k]);
-        l.setStyle({...normal,fillOpacity:roofShown?0.12:normal.fillOpacity});
-      }
-   });
- });
-}
-function remove(key){if(registry[key]&&map.hasLayer(registry[key].layer))map.removeLayer(registry[key].layer)}
-
-async function showFactor(key){
-  ['population','seifa','ndvi','lst'].forEach(remove);
-  if(key==='none'){updateLegend();return}
-  try{const x=await ensure(key);x.layer.addTo(map);bringFront(key);updateLegend(key)}
-  catch(e){console.error(e);alert(`Could not load ${cfg[key].title}`)}
-}
-async function toggleNeed(on){
-  if(!on){remove('need');updateLegend();return}
-  try{const x=await ensure('need');x.layer.addTo(map);bringFront();updateLegend('need')}
-  catch(e){console.error(e);alert('Could not load Green Roof Intervention Need')}
-}
-async function toggleCandidates(on){
-  if(!on){remove('candidates');closeRoofPanel();bringFront();updateLegend();return}
-  try{const x=await ensure('candidates');x.layer.addTo(map);bringFront();updateLegend('candidates')}
-  catch(e){console.error(e);document.getElementById('candidateToggle').checked=false;alert('Could not load candidate roofs')}
-}
-async function showScenario(key){
-  ['scenario1','scenario2','scenario3'].forEach(remove);
-  if(key==='none'){bringFront();updateLegend();return}
-  try{const x=await ensure(key);x.layer.addTo(map);bringFront(key);updateLegend(key)}
-  catch(e){console.error(e);alert(`Could not load ${cfg[key].title}`)}
-}
-function bringFront(preferred=null){
- ['scenario1','scenario2','scenario3','need','population','seifa','ndvi','lst'].forEach(k=>{
-   if(visible(k))registry[k].layer.bringToFront();
- });
- if(preferred&&visible(preferred))registry[preferred].layer.bringToFront();
- if(visible('boundary'))registry.boundary.layer.bringToFront();
- if(visible('candidates'))registry.candidates.layer.bringToFront();
- fadeGridWhenRoofsShown();
-}
-function visible(k){return registry[k]&&map.hasLayer(registry[k].layer)}
+let currentMode='need',currentFactor='need',currentScenario=1,requestVersion=0;
+function visible(k){return !!(registry[k]&&map.hasLayer(registry[k].layer))}
+function remove(k){if(visible(k))map.removeLayer(registry[k].layer)}
 function li(color,label){return `<div class="legend-item"><span class="swatch" style="background:${color}"></span><span>${label}</span></div>`}
-function updateLegend(key=null){
-  const el=document.getElementById('legend');
-  if(!key){
-    if(visible('candidates'))key='candidates';
-    else if(visible('scenario1'))key='scenario1'; else if(visible('scenario2'))key='scenario2'; else if(visible('scenario3'))key='scenario3';
-    else if(visible('population'))key='population'; else if(visible('seifa'))key='seifa'; else if(visible('ndvi'))key='ndvi'; else if(visible('lst'))key='lst';
-    else if(visible('need'))key='need';
-  }
-  if(key==='candidates'){
-    el.innerHTML=`<div class="legend-title">Candidate Priority</div><div class="legend-subtitle">Building-level screening output</div>
-    ${li('#8b0000','Very High')}${li('#d7301f','High')}${li('#fc8d59','Moderate')}${li('#fdbb84','Low')}${li('#fee8c8','Very Low')}`;
-    return;
-  }
-  if(['scenario1','scenario2','scenario3'].includes(key)){
-    el.innerHTML=`<div class="legend-title">${esc(cfg[key].title)}</div><div class="legend-subtitle">Illustrative cooling (°C)</div>
-    ${li('#eff3ff','< 1.0')}${li('#bdd7e7','1.0 – < 1.8')}${li('#6baed6','1.8 – < 2.6')}${li('#3182bd','2.6 – < 3.4')}${li('#08519c','≥ 3.4')}${li('#d9d9d9','No modelled value')}`;
-    return;
-  }
-  if(['population','seifa','ndvi','lst','need'].includes(key)){
+function updateLegend(){
+ const key=currentMode==='roofs'?'candidates':currentMode==='scenarios'?'scenario'+currentScenario:currentFactor;
+ const el=document.getElementById('legend');
+ if(key==='candidates'){
+    el.innerHTML='<div class="legend-title">Rooftop screening priority</div><div class="legend-subtitle">Building-level candidates</div>'+
+      li('#7f0000','Very High')+li('#d7301f','High')+li('#fc8d59','Moderate')+li('#fdbb84','Low')+li('#fee8c8','Very Low');
+ }else if(key.startsWith('scenario')){
+    el.innerHTML='<div class="legend-title">'+esc(cfg[key].title)+'</div><div class="legend-subtitle">Modelled cooling (°C)</div>'+
+      li('#eff3ff','&lt;1.0')+li('#bdd7e7','1.0–&lt;1.8')+li('#6baed6','1.8–&lt;2.6')+li('#3182bd','2.6–&lt;3.4')+li('#08519c','≥3.4')+li('#d9d9d9','No modelled value');
+ }else{
     const c=cfg[key];
-    el.innerHTML=`<div class="legend-title">${esc(c.title)}</div><div class="legend-subtitle">${esc(c.subtitle)}</div>
-    ${li(c.palette[0],'1 — Low')}${li(c.palette[1],'2')}${li(c.palette[2],'3')}${li(c.palette[3],'4')}${li(c.palette[4],'5 — High')}${li('#d9d9d9','Not assessed')}`;
-    return;
-  }
-  el.innerHTML='<div class="legend-title">Map legend</div><div class="legend-subtitle">Select an analysis layer to display its legend.</div>';
+    el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
+       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#d9d9d9','Not assessed');
+ }
 }
-
+function setModeUi(){
+ modes.forEach(mode=>{
+  document.getElementById(mode==='need'?'needControls':mode==='roofs'?'roofControls':'scenarioControls').classList.toggle('hidden',mode!==currentMode);
+ });
+ document.querySelectorAll('[data-mode]').forEach(el=>{
+   const selected=el.dataset.mode===currentMode;
+   el.classList.toggle('active',selected);
+   if(selected)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');
+ });
+ const key='scenario'+currentScenario;
+ document.getElementById('scenarioSlider').value=currentScenario;
+ document.getElementById('scenarioTitle').textContent=scenarioInfo[key][0];
+ document.getElementById('scenarioHelp').textContent=scenarioInfo[key][1];
+}
+async function renderMode(){
+ const seq=++requestVersion;
+ keys.forEach(remove);
+ closeRoofPanel();
+ const key=currentMode==='need'?currentFactor:currentMode==='roofs'?'candidates':'scenario'+currentScenario;
+ updateLegend();
+ try{
+   const target=await ensure(key);
+   if(seq!==requestVersion)return;
+   target.layer.addTo(map);
+   if(visible('boundary'))registry.boundary.layer.bringToFront();
+   if(key==='candidates')target.layer.bringToFront();
+   updateLegend();
+ }catch(err){
+   if(seq!==requestVersion)return;
+   console.error(err);alert('Could not load the selected map layer. Check the data files and try again.');
+ }
+}
+function changeMode(mode){
+ if(!modes.includes(mode))return;
+ currentMode=mode;setModeUi();renderMode();
+}
 async function init(){
-  try{
-    const boundary=await ensure('boundary');
-    boundary.layer.addTo(map);
-    if(studyBounds&&studyBounds.isValid())map.fitBounds(studyBounds,{padding:[24,24]});
-    await toggleNeed(true);describeScenario('none');
-  }catch(e){console.error(e);map.setView(CENTER,12)}
+ try{
+  const boundary=await ensure('boundary');
+  boundary.layer.addTo(map);
+  if(studyBounds&&studyBounds.isValid())map.fitBounds(studyBounds,{padding:[24,24]});
+  setModeUi();
+  await renderMode();
+ }catch(e){console.error(e);map.setView(CENTER,12)}
 }
-
-document.querySelectorAll('input[name=factor]').forEach(el=>el.addEventListener('change',()=>showFactor(el.value)));
-document.getElementById('needToggle').addEventListener('change',e=>toggleNeed(e.target.checked));
-document.getElementById('candidateToggle').addEventListener('change',e=>toggleCandidates(e.target.checked));
-document.getElementById('scenarioSlider').addEventListener('input', e=>{
- const v=Number(e.target.value);
- const key=v===0?'none':'scenario'+v;
- describeScenario(key);showScenario(key);
+document.querySelectorAll('[data-mode]').forEach(el=>el.addEventListener('click',()=>changeMode(el.dataset.mode)));
+document.querySelectorAll('input[name=factor]').forEach(el=>el.addEventListener('change',()=>{
+ if(!el.checked)return;currentFactor=el.value;changeMode('need');
+}));
+document.getElementById('scenarioSlider').addEventListener('input',e=>{
+ currentScenario=Number(e.target.value);setModeUi();renderMode();
 });
+document.getElementById('backToNeed').addEventListener('click',()=>changeMode('need'));
 document.getElementById('resetBtn').addEventListener('click',()=>studyBounds&&studyBounds.isValid()?map.fitBounds(studyBounds,{padding:[24,24]}):map.setView(CENTER,12));
 document.getElementById('closeRoofPanel').addEventListener('click',closeRoofPanel);
 
