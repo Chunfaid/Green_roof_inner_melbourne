@@ -119,3 +119,18 @@ button,input{font:inherit}
 .guide-steps span strong{display:block;color:#184733;font-size:13px;margin-bottom:3px}
 button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-offset:2px}
 @media(max-width:650px){.top-actions{gap:4px}.top-actions button{font-size:10px;padding:7px}.brand h1{font-size:14px}.sidebar{padding:11px}}
+
+/* Planning-focus sensitivity selector */
+.focus-selector{margin:11px 0;padding:12px;border:1px solid #d8e6dd;border-radius:11px;background:#f7faf8}
+.focus-selector.hidden{display:none}
+.focus-title{font-size:12px;font-weight:800;color:#174d3e;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.focus-title span{font-size:9px;font-weight:700;color:#6c8276;text-transform:uppercase;letter-spacing:.35px}
+.focus-lead{margin:6px 0 9px!important}
+.focus-options{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.focus-options label{display:flex;align-items:flex-start;gap:7px;cursor:pointer;border:1px solid #dce6e1;border-radius:8px;background:#fff;padding:8px 7px;font-size:11.5px;font-weight:700;line-height:1.3}
+.focus-options label:first-child{grid-column:1/-1}
+.focus-options label:has(input:checked){background:#e7f3ec;border-color:#46906c;box-shadow:inset 0 0 0 1px #46906c}
+.focus-options input{accent-color:#1b6b4f;margin:1px 0 0}
+.focus-options small{display:block;color:#78897e;font-weight:500;font-size:10px;margin-top:2px}
+.focus-feedback{font-size:10.5px;color:#174d3e;background:#edf5ef;border-radius:7px;padding:9px;margin-top:10px;line-height:1.45}
+.focus-disclaimer{font-size:10px!important;line-height:1.5!important}
