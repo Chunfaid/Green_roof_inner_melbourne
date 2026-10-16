@@ -82,3 +82,12 @@ button,input{font:inherit}
 .scenario-metrics span{display:block;font-size:10px;color:#627568;line-height:1.3}
 .scenario-metrics strong{display:block;font-size:16px;color:#163f32;margin-top:5px}
 .metric-note{font-size:10px!important;line-height:1.4!important;color:#64766e!important}
+
+/* Final visual polish: clearer map context, summaries and focus handling */
+.map-context{position:absolute;left:15px;bottom:20px;z-index:640;padding:9px 12px;background:rgba(255,255,255,.94);border:1px solid #d7e2db;border-radius:9px;color:#234f3a;font-size:12px;font-weight:700;box-shadow:0 3px 13px #123f3414;pointer-events:none;max-width:calc(100% - 330px)}
+.scenario-metrics>div:last-child{grid-column:1/-1;background:#e6f1e9}
+.scenario-metrics strong{font-size:20px;letter-spacing:-.35px}
+.mode-panel .tip{font-size:12px;line-height:1.5}
+.mode-tab:hover:not(.active){border-color:#83a997;background:#f6faf7}
+.mode-options label:hover{background:#f0f6f1}
+@media(max-width:700px){.map-context{left:10px;bottom:10px;max-width:calc(100% - 215px);font-size:10px;padding:7px}.legend{min-width:175px;right:9px;bottom:9px;padding:9px}}
