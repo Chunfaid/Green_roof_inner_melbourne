@@ -26,24 +26,24 @@
 <div class="layout">
   <aside class="sidebar">
     <div class="workflow-card">
-      <div class="eyebrow">Planning workflow</div>
+      <div class="eyebrow">Explore the map</div>
       <div class="workflow">
         <span>Need</span><b>→</b><span>Candidate roofs</span><b>→</b><span>Scenarios</span>
       </div>
-      <p>Explore the evidence behind intervention need, inspect individual candidate roofs, then compare implementation scenarios.</p>
+      <p>Explore where cooling is needed, inspect individual roof opportunities, then compare modelled outcomes. The 250 m grid compares neighbourhood conditions; rooftops are individual buildings.</p>
     </div>
 
     <section class="panel">
-      <div class="panel-title"><span class="step">01</span><h2>Input factor</h2><small>one at a time</small></div>
+      <div class="panel-title"><span class="step">01</span><h2>Explore cooling need</h2><small>one at a time</small></div><p class="help-text">Choose one evidence map. Select None to see the combined priority layer without an individual input factor.</p>
       <label><input type="radio" name="factor" value="none" checked> None</label>
-      <label><input type="radio" name="factor" value="population"> Population Density</label>
-      <label><input type="radio" name="factor" value="seifa"> Socioeconomic Disadvantage (SEIFA IRSD)</label>
-      <label><input type="radio" name="factor" value="ndvi"> Vegetation Need (NDVI)</label>
-      <label><input type="radio" name="factor" value="lst"> Land Surface Temperature</label>
+      <label><input type="radio" name="factor" value="population"> Population density</label>
+      <label><input type="radio" name="factor" value="seifa"> Socioeconomic vulnerability (SEIFA)</label>
+      <label><input type="radio" name="factor" value="ndvi"> Low vegetation cover (NDVI)</label>
+      <label><input type="radio" name="factor" value="lst"> Land surface temperature</label>
     </section>
 
     <section class="panel">
-      <div class="panel-title"><span class="step">02</span><h2>Combined analysis</h2></div>
+      <div class="panel-title"><span class="step">02</span><h2>Combined neighbourhood priority</h2></div>
       <label class="switch-row">
         <span>Green Roof Intervention Need</span>
         <input id="needToggle" type="checkbox" checked>
@@ -52,7 +52,7 @@
     </section>
 
     <section class="panel">
-      <div class="panel-title"><span class="step">03</span><h2>Building output</h2></div>
+      <div class="panel-title"><span class="step">03</span><h2>Candidate rooftops</h2></div>
       <label class="switch-row">
         <span>Green Roof Candidates</span>
         <input id="candidateToggle" type="checkbox">
@@ -62,15 +62,15 @@
     </section>
 
     <section class="panel">
-      <div class="panel-title"><span class="step">04</span><h2>Implementation scenario</h2><small>one at a time</small></div>
-      <label><input type="radio" name="scenario" value="none" checked> None</label>
-      <label><input type="radio" name="scenario" value="scenario1"> Scenario 1 — Priority / Very High</label>
-      <label><input type="radio" name="scenario" value="scenario2"> Scenario 2 — Targeted / High+</label>
-      <label><input type="radio" name="scenario" value="scenario3"> Scenario 3 — Broad / Moderate+</label>
+      <div class="panel-title"><span class="step">04</span><h2>Compare implementation scenarios</h2></div>
+      <p class="help-text">Move the slider to explore progressively broader implementation. Cooling is illustrative and modelled, not an observed air-temperature reduction.</p>
+      <input id="scenarioSlider" type="range" min="0" max="3" step="1" value="0" aria-label="Implementation scenario">
+      <div class="scenario-steps"><span>Off</span><span>1</span><span>2</span><span>3</span></div>
+      <div class="scenario-description" aria-live="polite"><strong id="scenarioTitle">No scenario selected</strong><p id="scenarioHelp">Choose a scenario to see estimated cooling.</p></div>
     </section>
 
     <section class="panel note-panel">
-      <strong>Screening tool only</strong>
+      <strong>Planning screening — site checks required</strong>
       <p>Candidate roofs require further structural, waterproofing, drainage, ownership, access, cost and site feasibility assessment.</p>
     </section>
   </aside>
@@ -115,6 +115,6 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=candidate8"></script>
+<script src="app.js?v=clarity1"></script>
 </body>
 </html>
