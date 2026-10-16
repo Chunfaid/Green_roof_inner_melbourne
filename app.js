@@ -1,6 +1,6 @@
 const CENTER=[-37.8136,144.9631];
 const map=L.map('map',{preferCanvas:true}).setView(CENTER,12);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:20,attribution:'&copy; OpenStreetMap contributors &copy; CARTO'}).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
 
 const cfg={
   boundary:{file:'data/Project_boundaries.geojson',kind:'boundary',title:'Project Boundary'},
