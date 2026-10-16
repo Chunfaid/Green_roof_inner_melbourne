@@ -58,8 +58,8 @@
       <p>Move between three predefined implementation scenarios. The map updates automatically.</p>
       <input id="scenarioSlider" type="range" min="1" max="3" step="1" value="1" aria-label="Implementation scenario">
       <div class="scenario-steps"><span>1 · Priority</span><span>2 · Targeted</span><span>3 · Broad</span></div>
-      <div class="scenario-description" aria-live="polite"><strong id="scenarioTitle">Scenario 1 — Priority</strong><p id="scenarioHelp">Very High priority areas only.</p></div><div class="scenario-metrics" aria-live="polite"><div><span>Scenario map features</span><strong id="scenarioCells">—</strong></div><div><span>Features with cooling values</span><strong id="scenarioModelled">—</strong></div><div><span>Average modelled cooling*</span><strong id="scenarioMean">—</strong></div></div><p class="metric-note">*Unweighted average of available feature outputs in the selected scenario, not a city-wide measured temperature reduction.</p>
-      <p class="tip">The colours represent illustrative modelled cooling, not observed local air-temperature changes.</p>
+      <div class="scenario-description" aria-live="polite"><strong id="scenarioTitle">Scenario 1 — Priority</strong><p id="scenarioHelp">Very High priority areas only.</p></div><div class="scenario-metrics" aria-live="polite"><div><span>Grid features in scenario file</span><strong id="scenarioCells">—</strong></div><div><span>Grid features with cooling</span><strong id="scenarioModelled">—</strong></div><div><span>Mean cooling where modelled*</span><strong id="scenarioMean">—</strong></div></div><p class="metric-note">*Unweighted mean among grid features with available cooling values, not the temperature reduction across the full study area. More coverage can lower this average.</p>
+      <p class="tip"><strong>How to interpret this:</strong> Wider implementation can increase the number of modelled locations while slightly lowering the average cooling per location. These are illustrative model outputs, not measured air-temperature changes.</p>
     </section>
     <section class="panel note-panel">
       <strong>For planning, not site approval</strong>
@@ -75,7 +75,7 @@
       <div><strong id="loadingTitle">Loading layer…</strong><small id="loadingText">Please wait</small></div>
     </div>
 
-    <div id="legend" class="legend"></div>
+    <div id="legend" class="legend"></div><div id="mapContext" class="map-context" aria-live="polite">Combined intervention need · 250 m grid</div>
 
     <aside id="roofPanel" class="roof-panel hidden" aria-live="polite">
       <div class="roof-panel-head">
@@ -107,6 +107,6 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=flow3"></script>
+<script src="app.js?v=polish4"></script>
 </body>
 </html>
