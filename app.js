@@ -235,6 +235,30 @@ function closeRoofPanel(){
   selectedRoofLayer=null;selectedProps=null;
 }
 
+let interactionToken=0;
+const scenarioInfo={
+  none:['No scenario selected','Choose a scenario to view illustrative modelled cooling.'],
+  scenario1:['Scenario 1 — Priority','Very High priority areas only.'],
+  scenario2:['Scenario 2 — Targeted','Very High and High priority areas.'],
+  scenario3:['Scenario 3 — Broad','Very High, High and Moderate priority areas.']
+};
+function describeScenario(key){
+ const info=scenarioInfo[key];
+ document.getElementById('scenarioTitle').textContent=info[0];
+ document.getElementById('scenarioHelp').textContent=info[1];
+}
+function fadeGridWhenRoofsShown(){
+ const roofShown=visible('candidates');
+ ['population','seifa','ndvi','lst','need','scenario1','scenario2','scenario3'].forEach(k=>{
+   if(!visible(k))return;
+   registry[k].layer.eachLayer(l=>{
+      if(typeof l.setStyle==='function') {
+        const normal=style(cfg[k].kind,l.feature?.properties||{},cfg[k]);
+        l.setStyle({...normal,fillOpacity:roofShown?0.12:normal.fillOpacity});
+      }
+   });
+ });
+}
 function remove(key){if(registry[key]&&map.hasLayer(registry[key].layer))map.removeLayer(registry[key].layer)}
 
 async function showFactor(key){
@@ -249,8 +273,8 @@ async function toggleNeed(on){
   catch(e){console.error(e);alert('Could not load Green Roof Intervention Need')}
 }
 async function toggleCandidates(on){
-  if(!on){remove('candidates');closeRoofPanel();updateLegend();return}
-  try{const x=await ensure('candidates');x.layer.addTo(map);x.layer.bringToFront();updateLegend('candidates')}
+  if(!on){remove('candidates');closeRoofPanel();bringFront();updateLegend();return}
+  try{const x=await ensure('candidates');x.layer.addTo(map);bringFront();updateLegend('candidates')}
   catch(e){console.error(e);document.getElementById('candidateToggle').checked=false;alert('Could not load candidate roofs')}
 }
 async function showScenario(key){
@@ -260,21 +284,13 @@ async function showScenario(key){
   catch(e){console.error(e);alert(`Could not load ${cfg[key].title}`)}
 }
 function bringFront(preferred=null){
-  // Drawing order:
-  // scenarios -> combined need -> selected factor -> boundary -> candidate roofs
-  ['scenario1','scenario2','scenario3'].forEach(k=>{
-    if(registry[k]&&map.hasLayer(registry[k].layer)) registry[k].layer.bringToFront();
-  });
-
-  if(registry.need&&map.hasLayer(registry.need.layer)) registry.need.layer.bringToFront();
-
-  // Put the selected input factor above the combined need layer so its own palette is visible.
-  if(preferred && ['population','seifa','ndvi','lst'].includes(preferred)){
-    if(registry[preferred]&&map.hasLayer(registry[preferred].layer)) registry[preferred].layer.bringToFront();
-  }
-
-  if(registry.boundary&&map.hasLayer(registry.boundary.layer)) registry.boundary.layer.bringToFront();
-  if(registry.candidates&&map.hasLayer(registry.candidates.layer)) registry.candidates.layer.bringToFront();
+ ['scenario1','scenario2','scenario3','need','population','seifa','ndvi','lst'].forEach(k=>{
+   if(visible(k))registry[k].layer.bringToFront();
+ });
+ if(preferred&&visible(preferred))registry[preferred].layer.bringToFront();
+ if(visible('boundary'))registry.boundary.layer.bringToFront();
+ if(visible('candidates'))registry.candidates.layer.bringToFront();
+ fadeGridWhenRoofsShown();
 }
 function visible(k){return registry[k]&&map.hasLayer(registry[k].layer)}
 function li(color,label){return `<div class="legend-item"><span class="swatch" style="background:${color}"></span><span>${label}</span></div>`}
@@ -310,14 +326,18 @@ async function init(){
     const boundary=await ensure('boundary');
     boundary.layer.addTo(map);
     if(studyBounds&&studyBounds.isValid())map.fitBounds(studyBounds,{padding:[24,24]});
-    await toggleNeed(true);
+    await toggleNeed(true);describeScenario('none');
   }catch(e){console.error(e);map.setView(CENTER,12)}
 }
 
 document.querySelectorAll('input[name=factor]').forEach(el=>el.addEventListener('change',()=>showFactor(el.value)));
 document.getElementById('needToggle').addEventListener('change',e=>toggleNeed(e.target.checked));
 document.getElementById('candidateToggle').addEventListener('change',e=>toggleCandidates(e.target.checked));
-document.querySelectorAll('input[name=scenario]').forEach(el=>el.addEventListener('change',()=>showScenario(el.value)));
+document.getElementById('scenarioSlider').addEventListener('input', e=>{
+ const v=Number(e.target.value);
+ const key=v===0?'none':'scenario'+v;
+ describeScenario(key);showScenario(key);
+});
 document.getElementById('resetBtn').addEventListener('click',()=>studyBounds&&studyBounds.isValid()?map.fitBounds(studyBounds,{padding:[24,24]}):map.setView(CENTER,12));
 document.getElementById('closeRoofPanel').addEventListener('click',closeRoofPanel);
 
