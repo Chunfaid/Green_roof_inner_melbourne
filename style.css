@@ -69,3 +69,6 @@ button,input{font:inherit}
 .scenario-steps{padding:4px 0;gap:4px;font-size:10px}
 .legend{max-width:min(280px,calc(100% - 30px))}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.mode-tab{font-size:12px}}
+
+/* Reduce basemap visual clutter while preserving analytical overlay colours. */
+.leaflet-tile-pane{filter:grayscale(0.85) saturate(0.35) brightness(1.12) contrast(0.78);}
