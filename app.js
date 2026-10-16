@@ -51,7 +51,7 @@ function factorValue(props, config){
 function n(v){const x=Number(v);return Number.isFinite(x)?x:null}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function scoreIndex(v){const x=n(v);if(x===null)return null;return Math.max(0,Math.min(4,Math.round(x)-1))}
-function colorFromScore(v,palette){const x=v===null||v===undefined||v===''?null:Number(v);if(x===null||!Number.isFinite(x))return '#d9d9d9';if(x===0)return '#a0aaa6';const i=scoreIndex(x);return i===null?'#d9d9d9':palette[i]}
+function colorFromScore(v,palette){const x=v===null||v===undefined||v===''?null:Number(v);if(x===null||!Number.isFinite(x))return '#626a70';if(x===0)return '#abb5b0';const i=scoreIndex(x);return i===null?'#626a70':palette[i]}
 function priorityClass(v){
   if(v===null || v===undefined || v==='') return 'Not assessed';
 
@@ -86,11 +86,11 @@ function coolingColor(v){const x=n(v);if(x===null)return'#d9d9d9';if(x<1)return'
 
 function style(kind,p,c){
   if(kind==='boundary')return{color:'#245b4a',weight:2.3,fillOpacity:0};
-  if(kind==='factor'||kind==='need'){const value=factorValue(p,c);return{color:'rgba(255,255,255,.65)',weight:.20,fillColor:colorFromScore(value,c.palette),fillOpacity:kind==='need'?.82:.85}}
+  if(kind==='factor'||kind==='need'){const value=kind==='need'?first(p,c.fields):factorValue(p,c);const valid=value!==null&&value!==''&&Number.isFinite(Number(value));return{color:'rgba(255,255,255,.65)',weight:.20,fillColor:colorFromScore(value,c.palette),fillOpacity:valid?.82:.94}}
   if(kind==='weighted'){
     const raw=first(p,c.fields);
     const val=raw===null?null:Number(raw);
-    return {color:'rgba(255,255,255,.65)',weight:.25,fillColor:colorFromScore(val,cfg.need.palette),fillOpacity:val!==null&&Number.isFinite(val)?.82:.45};
+    return {color:'rgba(255,255,255,.65)',weight:.25,fillColor:colorFromScore(val,cfg.need.palette),fillOpacity:val!==null&&Number.isFinite(val)?.82:.94};
   }
   if(kind==='candidate'){
     const pr=first(p,['priority c','priority_c','priority','Priority']);
@@ -286,11 +286,11 @@ function updateLegend(){
     const c=cfg[key];
     el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
       cfg.need.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+
-      li('#a0aaa6','Not assessed')+li('#d9d9d9','Incomplete data');
+      li('#abb5b0','Not assessed')+li('#626a70','Incomplete data');
  }else{
     const c=cfg[key];
     el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
-       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#a0aaa6','Not assessed')+li('#d9d9d9','Incomplete data');
+       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#abb5b0','Not assessed')+li('#626a70','Incomplete data');
  }
 }
 function updateScenarioMetrics(data){
