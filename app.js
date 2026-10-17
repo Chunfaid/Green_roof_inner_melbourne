@@ -13,7 +13,7 @@ const cfg={
   equity:{file:'data/equality_Focus.geojson',kind:'weighted',fields:['w_equity','equity_focus','equality_Focus','Equity_Focus'],title:'Equity-focused priority',subtitle:'40% SEIFA vulnerability · 20% each other indicator'},
   green:{file:'data/Greeness_Focus.geojson',kind:'weighted',fields:['w_green','green_focus','Greeness_Focus','vegetation_focus'],title:'Vegetation-focused priority',subtitle:'40% NDVI need · 20% each other indicator'},
   pop:{file:'data/Population_foucs.geojson',kind:'weighted',fields:['w_pop','pop_focus','Population_focus','Population_foucs'],title:'Population-focused priority',subtitle:'40% population density · 20% each other indicator'},
-  candidates:{file:'data/Greenrroof_weight.geojson',kind:'candidate',title:'Green Roof Candidates'},
+  candidates:{file:'data/Greenroof_weight_v2.geojson',kind:'candidate',title:'Green Roof Candidates'},
   scenario1:{file:'data/Scenario_1_priority.geojson',kind:'scenario',title:'Scenario 1 — Priority',subtitle:'Very High priority roofs'},
   scenario2:{file:'data/Scenario_2_targeted.geojson',kind:'scenario',title:'Scenario 2 — Targeted',subtitle:'Very High + High priority roofs'},
   scenario3:{file:'data/Scenario_3_Board.geojson',kind:'scenario',title:'Scenario 3 — Broad',subtitle:'Very High + High + Moderate priority roofs'}
@@ -51,7 +51,7 @@ function factorValue(props, config){
 function n(v){const x=Number(v);return Number.isFinite(x)?x:null}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function scoreIndex(v){const x=n(v);if(x===null)return null;return Math.max(0,Math.min(4,Math.round(x)-1))}
-function colorFromScore(v,palette){const x=v===null||v===undefined||v===''?null:Number(v);if(x===null||!Number.isFinite(x))return '#626a70';if(x===0)return '#abb5b0';const i=scoreIndex(x);return i===null?'#626a70':palette[i]}
+function colorFromScore(v,palette){const x=v===null||v===undefined||v===''?null:Number(v);if(x===null||!Number.isFinite(x))return '#92999c';if(x===0)return '#abb5b0';const i=scoreIndex(x);return i===null?'#92999c':palette[i]}
 function priorityClass(v){
   if(v===null || v===undefined || v==='') return 'Not assessed';
 
@@ -82,7 +82,7 @@ function priorityColor(v){
   if(cls==='Very Low') return '#fee8c8';
   return '#8e9793';
 }
-function coolingColor(v){const x=n(v);if(x===null)return'#d9d9d9';if(x<1)return'#eff3ff';if(x<1.8)return'#bdd7e7';if(x<2.6)return'#6baed6';if(x<3.4)return'#3182bd';return'#08519c'}
+function coolingColor(v){if(v===null||v===undefined||v==='')return '#aab2b8';const x=Number(v);if(!Number.isFinite(x))return '#aab2b8';if(x<1)return '#d7e7fb';if(x<1.8)return '#a4c8f0';if(x<2.6)return '#6a9cdb';if(x<3.4)return '#2767b3';return '#103e86'}
 
 const roofFocusFields={heat:['w_heat'],equity:['w_equity'],green:['w_green'],pop:['w_pop']};
 function roofFocusValue(p){
@@ -115,7 +115,7 @@ function style(kind,p,c){
       fillOpacity:.90
     };
   }
-  if(kind==='scenario'){const value=first(p,['cooling_C','Cooling_C','cooling_c']);return{color:'rgba(255,255,255,.65)',weight:.35,fillColor:coolingColor(value),fillOpacity:value===null?.08:.82}}
+  if(kind==='scenario'){const value=first(p,['cooling_C','Cooling_C','cooling_c']);return{color:'rgba(255,255,255,.55)',weight:.30,fillColor:coolingColor(value),fillOpacity:value===null?.34:.95}}
 }
 
 function fmt(v,d=2){
@@ -300,20 +300,20 @@ function updateLegend(){
     }else{
       el.innerHTML='<div class="legend-title">'+esc(cfg[focusKeys[currentFocus]].title)+'</div><div class="legend-subtitle">Joined grid need on screened rooftops</div>'+
         cfg.need.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+
-        li('#abb5b0','Not assessed')+li('#626a70','Incomplete data');
+        li('#abb5b0','Not assessed')+li('#92999c','Incomplete data');
     }
  }else if(key.startsWith('scenario')){
     el.innerHTML='<div class="legend-title">'+esc(cfg[key].title)+'</div><div class="legend-subtitle">Modelled cooling (°C)</div>'+
-      li('#eff3ff','&lt;1.0')+li('#bdd7e7','1.0–&lt;1.8')+li('#6baed6','1.8–&lt;2.6')+li('#3182bd','2.6–&lt;3.4')+li('#08519c','≥3.4')+li('#d9d9d9','No modelled value');
+      li('#d7e7fb','&lt;1.0')+li('#a4c8f0','1.0–&lt;1.8')+li('#6a9cdb','1.8–&lt;2.6')+li('#2767b3','2.6–&lt;3.4')+li('#103e86','≥3.4')+li('#aab2b8','No modelled value');
  }else if(cfg[key].kind==='weighted'){
     const c=cfg[key];
     el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
       cfg.need.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+
-      li('#abb5b0','Not assessed')+li('#626a70','Incomplete data');
+      li('#abb5b0','Not assessed')+li('#92999c','Incomplete data');
  }else{
     const c=cfg[key];
     el.innerHTML='<div class="legend-title">'+esc(c.title)+'</div><div class="legend-subtitle">'+esc(c.subtitle)+'</div>'+
-       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#abb5b0','Not assessed')+li('#626a70','Incomplete data');
+       c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#abb5b0','Not assessed')+li('#92999c','Incomplete data');
  }
 }
 function updateScenarioMetrics(data){
