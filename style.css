@@ -257,3 +257,59 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .scenario-results{top:16px;bottom:270px;max-height:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
 @media(max-width:900px){.legend{left:auto!important;right:9px!important;bottom:9px!important;min-width:175px;max-width:min(215px,calc(100% - 18px));max-height:30vh}.scenario-results{right:10px;top:10px;bottom:195px;max-height:none;overflow-y:auto}}
 @media(max-height:650px){.scenario-results{bottom:195px}.legend{max-height:32vh}}
+
+/* Layout audit (Oct 2026): prevent map controls and annotations colliding. */
+.map-context{
+  top:auto!important;
+  bottom:66px!important;
+  left:14px!important;
+  right:auto!important;
+  max-width:min(320px,calc(100% - 370px))!important;
+  width:max-content;
+  white-space:normal;
+  line-height:1.35;
+  font-size:11px;
+  border-radius:9px;
+  z-index:640;
+}
+.legend{
+  left:auto!important;
+  right:14px!important;
+  bottom:14px!important;
+  max-width:min(245px,calc(100% - 30px));
+  max-height:38vh;
+}
+.leaflet-control-scale{margin-left:14px!important;margin-bottom:12px!important}
+.north-arrow-control{margin-top:10px;pointer-events:none}
+.need-guide,.scenario-results{
+  top:16px!important;
+  bottom:270px!important;
+  max-height:none!important;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+}
+.roof-guide{top:16px;max-height:min(64vh,570px)}
+/* Visible focus when navigating panels by keyboard. */
+.need-guide summary:focus-visible,.roof-guide summary:focus-visible,
+.scenario-results summary:focus-visible{outline:2px solid #25705a;outline-offset:3px}
+@media(max-width:1050px){
+ .map-context{max-width:min(280px,calc(100% - 42px))!important}
+ .need-guide,.scenario-results{bottom:218px!important}
+ .legend{max-height:31vh}
+}
+@media(max-width:700px){
+ .map-context{
+   top:auto!important;bottom:56px!important;left:10px!important;
+   max-width:min(200px,calc(100% - 195px))!important;font-size:10px;padding:7px 9px
+ }
+ .legend{right:9px!important;bottom:9px!important;max-width:min(188px,48vw);max-height:29vh}
+ .need-guide,.scenario-results{top:10px!important;bottom:190px!important}
+ .roof-guide{max-height:47vh}
+ .leaflet-control-scale{margin-left:10px!important;margin-bottom:9px!important}
+}
+@media(max-width:490px){
+ .map-context{max-width:140px!important;font-size:9.5px}
+ .need-guide,.scenario-results{width:min(275px,calc(100% - 20px))}
+}
