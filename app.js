@@ -353,6 +353,7 @@ function updateScenarioMetrics(data){
   document.getElementById('scenarioMean').textContent=affectedDrops.length?(affectedDrops.reduce((a,b)=>a+b,0)/affectedDrops.length).toFixed(2)+' °C':'Not available';
 }
 function setModeUi(){
+ document.getElementById('scenarioResults').classList.toggle('hidden',currentMode!=='scenarios');
  updateMapContext();
  modes.forEach(mode=>{
   document.getElementById(mode==='need'?'needControls':mode==='roofs'?'roofControls':'scenarioControls').classList.toggle('hidden',mode!==currentMode);
