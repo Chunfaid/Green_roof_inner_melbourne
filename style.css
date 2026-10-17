@@ -179,3 +179,15 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .leaflet-control-scale-line{border-color:#234f3a!important;color:#234f3a!important;background:transparent!important;font-size:11px!important}
 .map-context{bottom:70px}
 @media(max-width:700px){.map-context{bottom:66px}.leaflet-control-scale{margin-left:10px!important;margin-bottom:10px!important}}
+
+/* Floating rooftop map guide, replaced by the roof attributes on selection. */
+.roof-guide{position:absolute;z-index:705;top:16px;right:16px;width:min(330px,calc(100% - 32px));padding:16px;background:rgba(255,255,255,.97);border:1px solid #d7e5dc;border-radius:14px;box-shadow:0 10px 30px rgba(17,55,39,.16);max-height:calc(100% - 32px);overflow-y:auto}
+.roof-guide.hidden{display:none}
+.roof-guide-header{display:flex;flex-direction:column;gap:5px;padding-bottom:10px;border-bottom:1px solid #e1eae4}
+.roof-guide-header strong{color:#174a38;font-size:15px}
+.roof-guide p{font-size:12px;line-height:1.6;color:#526a5d;margin:11px 0}
+.roof-guide details{border-top:1px solid #e1eae4;padding-top:9px}
+.roof-guide details summary{color:#205941;font-size:12px;font-weight:750;cursor:pointer}
+.roof-guide .roof-guide-foot{font-size:10.5px;color:#738378;margin-bottom:0}
+.roof-instruction-hint{font-size:11px!important;color:#667d70!important;border-top:1px solid #e1eae4;padding-top:10px}
+@media(max-width:900px){.roof-guide{right:10px;top:10px;width:min(290px,calc(100% - 20px));padding:12px;max-height:55%}}
