@@ -344,7 +344,7 @@ function updateScenarioMetrics(data){
     const after=first(p,['scenario_LST']);
     if(before===null||after===null)return null;
     const b=Number(before),a=Number(after);
-    return Number.isFinite(b)&&Number.isFinite(a)?b-a:null;
+    return Number.isFinite(b)&&Number.isFinite(a)?a-b:null;
   }).filter(v=>v!==null);
   const fmtN=new Intl.NumberFormat('en-AU');
   document.getElementById('scenarioCells').textContent=fmtN.format(items.length);
