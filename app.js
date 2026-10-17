@@ -309,7 +309,7 @@ function updateMapContext(){
  const el=document.getElementById('mapContext');if(!el)return;
  if(currentMode==='roofs')el.textContent=(currentFocus==='balanced'?'Original rooftop screening priority':cfg[focusKeys[currentFocus]].title)+' · candidate rooftops';
  else if(currentMode==='scenarios')el.textContent=focusNames[currentFocus]+' · Scenario '+currentScenario+' · modelled surface cooling';
- else el.textContent=(cfg[currentNeedKey()]?.title||'Cooling need')+' · 250 m grid';
+ else el.textContent=currentFactor==='need'?(currentFocus==='balanced'?'Cooling priority map':focusNames[currentFocus]+'-focused cooling priority'):(cfg[currentFactor]?.title||'Cooling indicator');
 }
 function updateLegend(){
  const key=currentMode==='roofs'?'candidates':currentMode==='scenarios'?currentScenarioKey():currentNeedKey();
