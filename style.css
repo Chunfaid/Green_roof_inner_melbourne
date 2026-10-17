@@ -134,3 +134,8 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .focus-options small{display:block;color:#78897e;font-weight:500;font-size:10px;margin-top:2px}
 .focus-feedback{font-size:10.5px;color:#174d3e;background:#edf5ef;border-radius:7px;padding:9px;margin-top:10px;line-height:1.45}
 .focus-disclaimer{font-size:10px!important;line-height:1.5!important}
+
+/* Compact green-roof mark */
+.brand-mark{flex:0 0 43px;width:43px;height:43px;border-radius:12px;background:linear-gradient(145deg,#2c8064,#164f3d);border:1px solid rgba(209,249,205,.40);box-shadow:inset 0 1px rgba(255,255,255,.12)}
+.brand-mark svg{display:block}
+@media(max-width:900px){.brand-mark{display:grid;flex:0 0 36px;width:36px;height:36px;border-radius:10px}.brand-mark svg{width:27px;height:27px}}
