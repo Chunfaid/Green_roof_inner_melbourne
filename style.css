@@ -173,3 +173,9 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .indicator-options label:has(input:checked){background:#e6f1ea}
 .indicator-options label:hover{background:#f0f6f2}
 #needControls>.focus-selector{margin-top:12px}
+
+/* Leaflet map scale: metric only, legible against the muted basemap. */
+.leaflet-control-scale{margin-left:14px!important;margin-bottom:14px!important;background:rgba(255,255,255,.95);padding:6px 8px;border:1px solid #d7e2db;border-radius:8px;box-shadow:0 2px 9px rgba(18,63,52,.12)}
+.leaflet-control-scale-line{border-color:#234f3a!important;color:#234f3a!important;background:transparent!important;font-size:11px!important}
+.map-context{bottom:70px}
+@media(max-width:700px){.map-context{bottom:66px}.leaflet-control-scale{margin-left:10px!important;margin-bottom:10px!important}}
