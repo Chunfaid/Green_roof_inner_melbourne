@@ -6,7 +6,7 @@
   <meta name="description" content="Green Roof Implementation Support Map for Inner Melbourne">
   <title>Green Roof Implementation Support Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=scenarioResultsPanel20261017">
+  <link rel="stylesheet" href="style.css?v=clearFactors20261017">
 </head>
 <body>
 <header class="topbar">
@@ -37,17 +37,23 @@
     </nav>
     <section id="needControls" class="panel mode-panel">
       <div class="panel-title"><h2>Explore cooling need</h2></div>
-      <p><strong>Start with the combined priority map.</strong> Darker cells indicate greater relative need for intervention. Select an indicator to understand what contributes to the assessment.</p>
-      <div class="mode-options">
-        <label><input type="radio" name="factor" value="need" checked> <strong>Combined intervention need</strong></label>
-        <label><input type="radio" name="factor" value="population"> Population density</label>
-        <label><input type="radio" name="factor" value="seifa"> Socioeconomic vulnerability (SEIFA)</label>
-        <label><input type="radio" name="factor" value="ndvi"> Vegetation need (NDVI)</label>
-        <label><input type="radio" name="factor" value="lst"> Land surface temperature</label>
+      <p><strong>Choose the map you want to see.</strong> The combined map is the main planning result. Individual indicators help explain why an area is prioritised.</p>
+      <div class="need-map-choice">
+        <div class="need-choice-heading"><span class="need-choice-number">A</span><strong>Priority map</strong><small>Recommended starting point</small></div>
+        <label class="combined-need-choice"><input type="radio" name="factor" value="need" checked><span><strong>Combined intervention need</strong><small>All four indicators combined into one priority score</small></span></label>
+        <details class="indicator-explorer" id="indicatorExplorer">
+          <summary><span class="need-choice-number">B</span><span><strong>Explore individual indicators</strong><small>Inspect one input at a time — not a separate planning focus</small></span><span class="indicator-chevron" aria-hidden="true">▾</span></summary>
+          <div class="indicator-options" role="group" aria-label="Individual input indicator maps">
+            <label><input type="radio" name="factor" value="population"><span><strong>Population density</strong><small>Where more people may be exposed</small></span></label>
+            <label><input type="radio" name="factor" value="seifa"><span><strong>Socioeconomic vulnerability</strong><small>SEIFA disadvantage indicator</small></span></label>
+            <label><input type="radio" name="factor" value="ndvi"><span><strong>Vegetation need</strong><small>Lower greenness based on NDVI</small></span></label>
+            <label><input type="radio" name="factor" value="lst"><span><strong>Land surface temperature</strong><small>Areas with hotter surface conditions</small></span></label>
+          </div>
+        </details>
       </div>
       <div id="focusSelector" class="focus-selector">
-        <div class="focus-title">Planning focus <span>Weight sensitivity</span></div>
-        <p class="focus-lead">Change which indicator carries more weight. The grid is recoloured using the same 1–5 priority scale.</p>
+        <div class="focus-title">Prioritisation method <span>For combined map</span></div>
+        <p class="focus-lead">Keep all four indicators, but choose which one matters most. This changes the combined priority map and linked cooling scenarios.</p>
         <div class="focus-options" role="group" aria-label="Planning focus">
           <label><input type="radio" name="focus" value="balanced" checked><span>Balanced <small>Original equal-weight model</small></span></label>
           <label><input type="radio" name="focus" value="heat"><span>Heat <small>40% temperature</small></span></label>
@@ -149,6 +155,6 @@
 <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="helpHeading"><div class="modal-card"><button id="closeHelp" type="button" aria-label="Close guide">×</button><div class="eyebrow">A QUICK START</div><h2 id="helpHeading">Explore the green-roof opportunity map</h2><div class="guide-steps"><div><b>01</b><span><strong>Find cooling need</strong>Start with the combined 250 m neighbourhood priority grid, then inspect contributing indicators.</span></div><div><b>02</b><span><strong>Investigate rooftops</strong>Switch to Rooftops, zoom in, and select a building to view screening details.</span></div><div><b>03</b><span><strong>Compare scenarios</strong>Use the slider to see progressively wider implementation and illustrative modelled cooling.</span></div></div><p class="modal-note">These maps support exploration and further investigation. They do not certify roof feasibility or predict measured local air temperatures.</p><button id="startExploring" class="primary-action" type="button">Start exploring →</button></div></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=scenarioResultsPanel20261017"></script>
+<script src="app.js?v=clearFactors20261017"></script>
 </body>
 </html>
