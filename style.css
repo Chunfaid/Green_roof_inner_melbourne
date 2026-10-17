@@ -221,3 +221,11 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .need-guide{bottom:245px;max-height:none;overflow-y:auto;scrollbar-width:thin}
 @media(max-width:900px){.need-guide{bottom:210px;max-height:none}}
 @media(max-height:650px){.need-guide{bottom:185px}}
+
+/* Help modal: keep the primary CTA in normal document flow, not over the heading. */
+#helpModal .modal-card{padding:26px 28px;max-width:620px}
+#helpModal .modal-card>button#startExploring{position:static;display:block;width:100%;height:auto;margin:20px 0 0;padding:12px 16px;background:#19543f;color:#fff;border:0;border-radius:9px;font-size:13px;font-weight:750;cursor:pointer;text-align:center}
+#helpModal .modal-card>button#startExploring:hover{background:#267254}
+#helpModal .modal-card>button#closeHelp{position:absolute;top:10px;right:12px;width:35px;height:35px;padding:0;background:transparent;color:#6d7b75;font-size:28px}
+#helpModal #helpHeading{padding-right:28px;line-height:1.2;margin-top:9px}
+@media(max-width:650px){#helpModal .modal-card{padding:20px}#helpModal #helpHeading{font-size:21px}}
