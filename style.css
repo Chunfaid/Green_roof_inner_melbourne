@@ -216,3 +216,8 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .need-guide .indicator-explorer summary small{font-size:9.5px}
 .need-control-intro{font-size:11.5px!important;color:#52695f!important}
 @media(max-width:900px){.need-guide{width:min(300px,calc(100% - 20px))}}
+
+/* Reserve the lower-right corner for the legend instead of covering it. */
+.need-guide{bottom:245px;max-height:none;overflow-y:auto;scrollbar-width:thin}
+@media(max-width:900px){.need-guide{bottom:210px;max-height:none}}
+@media(max-height:650px){.need-guide{bottom:185px}}
