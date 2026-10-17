@@ -6,7 +6,7 @@
   <meta name="description" content="Green Roof Implementation Support Map for Inner Melbourne">
   <title>Green Roof Implementation Support Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=roofGuide20261017">
+  <link rel="stylesheet" href="style.css?v=needGuide20261017">
 </head>
 <body>
 <header class="topbar">
@@ -64,7 +64,7 @@
         <div id="focusFeedback" class="focus-feedback" aria-live="polite">Showing the original balanced priority map.</div>
         <p class="focus-disclaimer">Alternative weights: 40% selected indicator, 20% each remaining indicator. These are exploratory choices, not validated optimal weights. Cooling scenarios change with the selected planning focus.</p>
       </div>
-      <details class="method-note"><summary>How is cooling need assessed?</summary><p>The combined map brings together population density, socioeconomic disadvantage (SEIFA IRSD), vegetation need (NDVI) and land surface temperature. Individual factor maps show the underlying relative scores.</p></details><details class="method-note"><summary>Why use a 250 m grid?</summary><p>Equal-sized 250 m × 250 m cells allow consistent comparison of neighbourhood-scale indicators. Conditions can vary within a cell; individual roof polygons provide a more detailed screening layer.</p></details><button type="button" class="primary-action next-mode" data-next-mode="roofs">Next: Explore rooftop opportunities →</button>
+      <p class="need-method-hint">Methodology notes are available in the panel on the map.</p><button type="button" class="primary-action next-mode" data-next-mode="roofs">Next: Explore rooftop opportunities →</button>
     </section>
     <section id="roofControls" class="panel mode-panel hidden">
       <div class="panel-title"><h2>Explore candidate rooftops</h2></div>
@@ -117,7 +117,14 @@
 
     <div id="legend" class="legend"></div><div id="mapContext" class="map-context" aria-live="polite">Combined intervention need · 250 m grid</div>
 
-    <aside id="roofGuide" class="roof-guide hidden" aria-label="Rooftop map instructions">
+    <aside id="needGuide" class="need-guide" aria-label="Cooling need methodology">
+      <div class="need-guide-heading"><span class="eyebrow">UNDERSTANDING THE MAP</span><strong>Why are areas prioritised?</strong></div>
+      <p>The map combines four indicators into a neighbourhood cooling-need score. Darker cells indicate higher relative need for intervention.</p>
+      <details><summary>How is cooling need assessed?</summary><p>The four inputs are population density, socioeconomic disadvantage (SEIFA IRSD), vegetation need (NDVI), and land surface temperature. Individual indicator maps show each input separately.</p></details>
+      <details><summary>Why a 250 m grid?</summary><p>Each 250 m × 250 m cell summarises neighbourhood-scale conditions consistently. Conditions may vary within a cell, so rooftop polygons are assessed separately.</p></details>
+      <p class="need-guide-foot">These are relative priority scores, not direct temperature predictions.</p>
+    </aside>
+        <aside id="roofGuide" class="roof-guide hidden" aria-label="Rooftop map instructions">
       <div class="roof-guide-header"><span class="eyebrow">ROOFTOP EXPLORER</span><strong>How to use this map</strong></div>
       <p>Zoom into a neighbourhood and <strong>click a coloured rooftop</strong> to inspect its priority, mapped area and screening confidence.</p>
       <details><summary>What is a candidate rooftop?</summary><p>These roofs are potential opportunities identified by spatial screening, not confirmed feasible green roofs. Structural, access and planning checks are still needed before implementation.</p></details>
@@ -160,6 +167,6 @@
 <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="helpHeading"><div class="modal-card"><button id="closeHelp" type="button" aria-label="Close guide">×</button><div class="eyebrow">A QUICK START</div><h2 id="helpHeading">Explore the green-roof opportunity map</h2><div class="guide-steps"><div><b>01</b><span><strong>Find cooling need</strong>Start with the combined 250 m neighbourhood priority grid, then inspect contributing indicators.</span></div><div><b>02</b><span><strong>Investigate rooftops</strong>Switch to Rooftops, zoom in, and select a building to view screening details.</span></div><div><b>03</b><span><strong>Compare scenarios</strong>Use the slider to see progressively wider implementation and illustrative modelled cooling.</span></div></div><p class="modal-note">These maps support exploration and further investigation. They do not certify roof feasibility or predict measured local air temperatures.</p><button id="startExploring" class="primary-action" type="button">Start exploring →</button></div></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=roofGuide20261017"></script>
+<script src="app.js?v=needGuide20261017"></script>
 </body>
 </html>
