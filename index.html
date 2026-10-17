@@ -6,7 +6,7 @@
   <meta name="description" content="Green Roof Implementation Support Map for Inner Melbourne">
   <title>Green Roof Implementation Support Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=helpModalButtonFix20261017">
+  <link rel="stylesheet" href="style.css?v=scenarioCompare20261017">
 </head>
 <body>
 <header class="topbar">
@@ -134,7 +134,7 @@
     </aside>
         <aside id="scenarioResults" class="scenario-results hidden" aria-live="polite">
       <div class="scenario-results-header"><span class="eyebrow">MODELLED SCENARIO RESULTS</span><strong>Cooling outcomes</strong></div>
-      <div class="scenario-description" aria-live="polite"><strong id="scenarioTitle">Scenario 1 — Priority</strong><p id="scenarioHelp">Very High priority areas only.</p></div><div class="scenario-metrics" aria-live="polite"><div><span>Grid features in scenario file</span><strong id="scenarioCells">—</strong></div><div><span>Grid cells with temperature reduction</span><strong id="scenarioModelled">—</strong></div><div><span>Average temperature drop per affected grid cell*</span><strong id="scenarioMean">—</strong></div></div><p class="metric-note">*Average modelled cooling only across 250 m grid cells with a temperature reduction; unaffected cells are excluded. For balanced scenarios, the cooling_C estimate is used where original and scenario LST fields are unavailable. These are illustrative surface-cooling estimates, not measured air-temperature changes.</p>
+      <div class="scenario-description" aria-live="polite"><strong id="scenarioTitle">Scenario 1 — Priority</strong><p id="scenarioHelp">Very High priority areas only.</p></div><div class="scenario-metrics" aria-live="polite"><div><span>Grid features in scenario file</span><strong id="scenarioCells">—</strong></div><div><span>Grid cells with temperature reduction</span><strong id="scenarioModelled">—</strong></div><div><span>Average temperature drop per affected grid cell*</span><strong id="scenarioMean">—</strong></div></div><div class="scenario-comparison-block"><div class="comparison-heading">Compare all three scenarios</div><div id="scenarioComparison" aria-live="polite"><p class="comparison-status">Loading comparison…</p></div></div><p class="metric-note">*Average modelled cooling only across 250 m grid cells with a temperature reduction; unaffected cells are excluded. For balanced scenarios, the cooling_C estimate is used where original and scenario LST fields are unavailable. These are illustrative surface-cooling estimates, not measured air-temperature changes.</p>
       
     </aside>
     <aside id="roofPanel" class="roof-panel hidden" aria-live="polite">
@@ -169,6 +169,6 @@
 <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="helpHeading"><div class="modal-card"><button id="closeHelp" type="button" aria-label="Close guide">×</button><div class="eyebrow">A QUICK START</div><h2 id="helpHeading">Explore the green-roof opportunity map</h2><div class="guide-steps"><div><b>01</b><span><strong>Find cooling need</strong>Start with the combined 250 m neighbourhood priority grid, then inspect contributing indicators.</span></div><div><b>02</b><span><strong>Investigate rooftops</strong>Switch to Rooftops, zoom in, and select a building to view screening details.</span></div><div><b>03</b><span><strong>Compare scenarios</strong>Use the slider to see progressively wider implementation and illustrative modelled cooling.</span></div></div><p class="modal-note">These maps support exploration and further investigation. They do not certify roof feasibility or predict measured local air temperatures.</p><button id="startExploring" class="primary-action" type="button">Start exploring →</button></div></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="app.js?v=clearMapName20261017"></script>
+<script src="app.js?v=scenarioCompare20261017"></script>
 </body>
 </html>
