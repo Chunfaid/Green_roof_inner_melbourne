@@ -337,23 +337,52 @@ function updateLegend(){
        c.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+li('#abb5b0','Not assessed')+li('#92999c','Incomplete data');
  }
 }
+function scenarioStats(data){
+ const features=Array.isArray(data?.features)?data.features:[];
+ const drops=features.map(f=>{
+  const p=f.properties||{},cool=first(p,['cooling_C','Cooling_C','cooling_c']);
+  const before=first(p,['LST_mean']),after=first(p,['scenario_LST']);
+  if(before!==null&&after!==null){
+   const b=Number(before),a=Number(after);
+   if(Number.isFinite(b)&&Number.isFinite(a)&&b>a)return b-a;
+  }
+  if(cool!==null&&Number.isFinite(Number(cool))&&Number(cool)>0)return Number(cool);
+  return null;
+ }).filter(x=>x!==null);
+ return {total:features.length,count:drops.length,mean:drops.length?drops.reduce((a,b)=>a+b,0)/drops.length:null};
+}
 function updateScenarioMetrics(data){
-  const items=Array.isArray(data?.features)?data.features:[];
-  const coolValues=items.map(f=>first(f.properties||{},['cooling_C','Cooling_C','cooling_c']))
-    .filter(v=>v!==null&&v!==undefined&&v!=='').map(Number).filter(v=>Number.isFinite(v)&&v>0);
-  const changes=items.map(f=>{
-    const p=f.properties||{};
-    const before=first(p,['LST_mean']);
-    const after=first(p,['scenario_LST']);
-    if(before===null||after===null)return null;
-    const b=Number(before),a=Number(after);
-    return Number.isFinite(b)&&Number.isFinite(a)&&a<b?b-a:null;
-  }).filter(v=>v!==null);
-  const fmtN=new Intl.NumberFormat('en-AU');
-  document.getElementById('scenarioCells').textContent=fmtN.format(items.length);
-  document.getElementById('scenarioModelled').textContent=fmtN.format(coolValues.length);
-  const affectedDrops=changes.length?changes:coolValues; // Legacy balanced files may only store cooling_C.
-  document.getElementById('scenarioMean').textContent=affectedDrops.length?(affectedDrops.reduce((a,b)=>a+b,0)/affectedDrops.length).toFixed(2)+' °C':'Not available';
+ const stats=scenarioStats(data),fmtN=new Intl.NumberFormat('en-AU');
+ document.getElementById('scenarioCells').textContent=fmtN.format(stats.total);
+ document.getElementById('scenarioModelled').textContent=fmtN.format(stats.count);
+ document.getElementById('scenarioMean').textContent=stats.mean!==null?stats.mean.toFixed(2)+' °C':'Not available';
+}
+const scenarioStatsCache={};
+async function loadScenarioStats(focus,idx){
+ const key='scenario_'+focus+'_'+idx;
+ if(scenarioStatsCache[key])return scenarioStatsCache[key];
+ if(registry[key]?.featureData){return scenarioStatsCache[key]=scenarioStats(registry[key].featureData)}
+ const response=await fetch(cfg[key].file);
+ if(!response.ok)throw Error('Unable to read '+cfg[key].file);
+ return scenarioStatsCache[key]=scenarioStats(await response.json());
+}
+let comparisonVersion=0;
+async function updateScenarioComparison(){
+ const seq=++comparisonVersion,focus=currentFocus;
+ const el=document.getElementById('scenarioComparison');
+ if(!el)return;
+ el.innerHTML='<p class="comparison-status">Loading comparison…</p>';
+ try{
+  const stats=await Promise.all([1,2,3].map(i=>loadScenarioStats(focus,i)));
+  if(seq!==comparisonVersion||currentMode!=='scenarios'||currentFocus!==focus)return;
+  const maxCount=Math.max(1,...stats.map(x=>x.count));
+  el.innerHTML=stats.map((v,i)=>'<div class="comparison-row'+(i+1===currentScenario?' active':'')+'"><div class="comparison-row-heading"><b>Scenario '+(i+1)+'</b><span>'+v.count.toLocaleString('en-AU')+' cells · '+(v.mean===null?'N/A':v.mean.toFixed(2)+' °C avg drop')+'</span></div><div class="comparison-track"><span style="width:'+Math.max(0,v.count/maxCount*100).toFixed(1)+'%"></span></div></div>').join('')+
+  '<p class="comparison-explainer">Bars compare the number of 250 m grid cells with modelled cooling. Average cooling includes affected cells only.</p>';
+ }catch(e){
+  if(seq!==comparisonVersion)return;
+  console.error(e);
+  el.innerHTML='<p class="comparison-status">Comparison unavailable; check the scenario GeoJSON files.</p>';
+ }
 }
 function setModeUi(){
  document.getElementById('scenarioResults').classList.toggle('hidden',currentMode!=='scenarios');
@@ -380,7 +409,7 @@ async function renderMode(){
  keys.forEach(remove);
  closeRoofPanel();
  const key=currentMode==='need'?currentNeedKey():currentMode==='roofs'?'candidates':currentScenarioKey();
- if(currentMode==='scenarios')clearScenarioMetrics();
+ if(currentMode==='scenarios'){clearScenarioMetrics();updateScenarioComparison()}else comparisonVersion++;
  updateLegend();
  try{
    const target=await ensure(key);
