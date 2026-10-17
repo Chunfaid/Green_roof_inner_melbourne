@@ -250,3 +250,10 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .north-label{font-size:12px;line-height:1.2;font-weight:850}
 .north-pointer{font-size:21px;line-height:1;color:#19543f}
 @media(max-width:900px){.legend{left:10px;right:auto;bottom:62px;max-width:min(190px,45vw);min-width:0;max-height:38vh;padding:9px}.map-context{top:10px;left:54px;bottom:auto;max-width:calc(100% - 110px);font-size:10px}.north-arrow-control{margin-left:10px}}
+
+/* Restore the map legend to its original bottom-right position.
+   The floating scenario results panel stays above it and scrolls independently. */
+.legend{left:auto!important;right:16px!important;bottom:18px!important;min-width:195px;max-width:min(245px,calc(100% - 32px));max-height:38vh;overflow-y:auto}
+.scenario-results{top:16px;bottom:270px;max-height:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+@media(max-width:900px){.legend{left:auto!important;right:9px!important;bottom:9px!important;min-width:175px;max-width:min(215px,calc(100% - 18px));max-height:30vh}.scenario-results{right:10px;top:10px;bottom:195px;max-height:none;overflow-y:auto}}
+@media(max-height:650px){.scenario-results{bottom:195px}.legend{max-height:32vh}}
