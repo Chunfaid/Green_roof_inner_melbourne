@@ -208,6 +208,7 @@ function selectRoof(layer,props){
   }
   selectedRoofLayer=layer;
   selectedProps=props;
+  document.getElementById('roofGuide').classList.add('hidden');
   showingAll=false;
   layer.setStyle({weight:3,color:'#102f27',fillOpacity:.9});
   layer.bringToFront();
@@ -278,6 +279,7 @@ function closeRoofPanel(){
     selectedRoofLayer.setStyle(style('candidate',selectedProps||{},cfg.candidates));
   }
   selectedRoofLayer=null;selectedProps=null;
+  document.getElementById('roofGuide').classList.toggle('hidden',currentMode!=='roofs');
 }
 
 
@@ -355,6 +357,7 @@ function updateScenarioMetrics(data){
 }
 function setModeUi(){
  document.getElementById('scenarioResults').classList.toggle('hidden',currentMode!=='scenarios');
+ document.getElementById('roofGuide').classList.toggle('hidden',currentMode!=='roofs'||!!selectedRoofLayer);
  updateMapContext();
  modes.forEach(mode=>{
   document.getElementById(mode==='need'?'needControls':mode==='roofs'?'roofControls':'scenarioControls').classList.toggle('hidden',mode!==currentMode);
