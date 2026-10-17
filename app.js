@@ -357,6 +357,7 @@ function updateScenarioMetrics(data){
 }
 function setModeUi(){
  document.getElementById('scenarioResults').classList.toggle('hidden',currentMode!=='scenarios');
+ document.getElementById('needGuide').classList.toggle('hidden',currentMode!=='need');
  document.getElementById('roofGuide').classList.toggle('hidden',currentMode!=='roofs'||!!selectedRoofLayer);
  updateMapContext();
  modes.forEach(mode=>{
