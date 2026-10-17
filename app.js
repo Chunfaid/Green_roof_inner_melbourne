@@ -344,12 +344,12 @@ function updateScenarioMetrics(data){
     const after=first(p,['scenario_LST']);
     if(before===null||after===null)return null;
     const b=Number(before),a=Number(after);
-    return Number.isFinite(b)&&Number.isFinite(a)?a-b:null;
+    return Number.isFinite(b)&&Number.isFinite(a)&&a<b?b-a:null;
   }).filter(v=>v!==null);
   const fmtN=new Intl.NumberFormat('en-AU');
   document.getElementById('scenarioCells').textContent=fmtN.format(items.length);
   document.getElementById('scenarioModelled').textContent=fmtN.format(coolValues.length);
-  document.getElementById('scenarioMean').textContent=changes.length?(changes.reduce((a,b)=>a+b,0)/changes.length).toFixed(3)+' °C':'Not available';
+  document.getElementById('scenarioMean').textContent=changes.length?(changes.reduce((a,b)=>a+b,0)/changes.length).toFixed(2)+' °C':'Not available';
 }
 function setModeUi(){
  updateMapContext();
