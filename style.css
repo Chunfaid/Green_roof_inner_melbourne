@@ -229,3 +229,16 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 #helpModal .modal-card>button#closeHelp{position:absolute;top:10px;right:12px;width:35px;height:35px;padding:0;background:transparent;color:#6d7b75;font-size:28px}
 #helpModal #helpHeading{padding-right:28px;line-height:1.2;margin-top:9px}
 @media(max-width:650px){#helpModal .modal-card{padding:20px}#helpModal #helpHeading{font-size:21px}}
+
+/* Compact three-scenario comparison for the active planning focus */
+.scenario-comparison-block{border-top:1px solid #e2eae3;padding-top:12px;margin-top:12px}
+.comparison-heading{font-weight:800;color:#184c39;font-size:12px;margin-bottom:9px}
+.comparison-row{padding:7px 8px;border-radius:8px;margin-bottom:4px}
+.comparison-row.active{background:#ebf4ee;outline:1px solid #b3d5bf}
+.comparison-row-heading{display:flex;justify-content:space-between;gap:7px;align-items:baseline;color:#345c47;font-size:10.5px}
+.comparison-row-heading b{white-space:nowrap}
+.comparison-row-heading span{text-align:right;font-size:10px}
+.comparison-track{height:7px;background:#e5ece9;border-radius:8px;overflow:hidden;margin-top:6px}
+.comparison-track span{display:block;height:100%;background:#468e70;border-radius:8px}
+.comparison-row.active .comparison-track span{background:#176a4c}
+.comparison-explainer,.comparison-status{font-size:10px!important;color:#687c70!important;line-height:1.45!important;margin:9px 0 0!important}
