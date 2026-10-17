@@ -2,6 +2,16 @@ const CENTER=[-37.8136,144.9631];
 const map=L.map('map',{preferCanvas:true}).setView(CENTER,12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
 L.control.scale({position:'bottomleft',metric:true,imperial:false,maxWidth:120}).addTo(map);
+const northControl=L.control({position:'topleft'});
+northControl.onAdd=function(){
+ const el=L.DomUtil.create('div','north-arrow-control');
+ el.setAttribute('role','img');
+ el.setAttribute('aria-label','North is up');
+ el.innerHTML='<span class="north-label">N</span><span class="north-pointer" aria-hidden="true">▲</span>';
+ L.DomEvent.disableClickPropagation(el);
+ return el;
+};
+northControl.addTo(map);
 
 const cfg={
   boundary:{file:'data/Project_boundaries.geojson',kind:'boundary',title:'Project Boundary'},
