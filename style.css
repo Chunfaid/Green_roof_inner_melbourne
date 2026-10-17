@@ -204,3 +204,15 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .need-guide .need-guide-foot{font-size:10.5px;color:#738378;margin-bottom:0}
 .need-method-hint{font-size:11px!important;color:#667d70!important;border-top:1px solid #e1eae4;padding-top:10px}
 @media(max-width:900px){.need-guide{right:10px;top:10px;width:min(290px,calc(100% - 20px));padding:12px;max-height:55%}}
+
+/* Keep map choices in the need guide and weighting controls in the sidebar */
+.need-guide{width:min(360px,calc(100% - 32px))}
+.need-guide .need-map-choice{margin:10px 0;padding:9px}
+.need-guide .need-choice-heading{flex-wrap:wrap;font-size:11px}
+.need-guide .need-choice-heading small{margin-left:0}
+.need-guide .combined-need-choice{padding:10px}
+.need-guide .combined-need-choice strong,.need-guide .indicator-explorer summary strong{font-size:11.5px}
+.need-guide .indicator-explorer summary{padding:9px}
+.need-guide .indicator-explorer summary small{font-size:9.5px}
+.need-control-intro{font-size:11.5px!important;color:#52695f!important}
+@media(max-width:900px){.need-guide{width:min(300px,calc(100% - 20px))}}
