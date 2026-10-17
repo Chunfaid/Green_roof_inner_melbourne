@@ -349,7 +349,8 @@ function updateScenarioMetrics(data){
   const fmtN=new Intl.NumberFormat('en-AU');
   document.getElementById('scenarioCells').textContent=fmtN.format(items.length);
   document.getElementById('scenarioModelled').textContent=fmtN.format(coolValues.length);
-  document.getElementById('scenarioMean').textContent=changes.length?(changes.reduce((a,b)=>a+b,0)/changes.length).toFixed(2)+' °C':'Not available';
+  const affectedDrops=changes.length?changes:coolValues; // Legacy balanced files may only store cooling_C.
+  document.getElementById('scenarioMean').textContent=affectedDrops.length?(affectedDrops.reduce((a,b)=>a+b,0)/affectedDrops.length).toFixed(2)+' °C':'Not available';
 }
 function setModeUi(){
  updateMapContext();
