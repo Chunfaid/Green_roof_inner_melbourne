@@ -19,6 +19,24 @@ const cfg={
   scenario3:{file:'data/Scenario_3_Board.geojson',kind:'scenario',title:'Scenario 3 — Broad',subtitle:'Very High + High + Moderate priority roofs'}
 };
 
+const scenarioFiles={
+  balanced:['Scenario_1_priority.geojson','Scenario_2_targeted.geojson','Scenario_3_Board.geojson'],
+  heat:['Heat_S1_cooling.geojson','Heat_S2_roofs_cooling.geojson','Heat_S3_roofs_cooling.geojson'],
+  equity:['Equity_S1_roofs_cooling.geojson','Equity_S2_roofs_cooling.geojson','Equity_S3_roofs_cooling.geojson'],
+  green:['Green_S1_roofs_cooling.geojson','Green_S2_roofs_cooling.geojson','Green_S3_roofs_cooling.geojson'],
+  pop:['Population_S1_roofs_cooling.geojson','Population_S2_roofs_cooling.geojson','Population_S3_roofs_cooling.geojson']
+};
+const focusNames={balanced:'Balanced',heat:'Heat',equity:'Equity',green:'Vegetation',pop:'Population'};
+for(const [focus,files] of Object.entries(scenarioFiles)){
+  files.forEach((file,i)=>{
+    const key='scenario_'+focus+'_'+(i+1);
+    cfg[key]={file:'data/'+file,kind:'scenario',title:focusNames[focus]+' — Scenario '+(i+1),subtitle:'Modelled surface cooling'};
+  });
+}
+function currentScenarioKey(){return 'scenario_'+currentFocus+'_'+currentScenario}
+function clearScenarioMetrics(){
+ ['scenarioCells','scenarioModelled','scenarioMean'].forEach(id=>document.getElementById(id).textContent='—');
+}
 const registry={};
 let studyBounds=null;
 let selectedRoofLayer=null;
@@ -263,7 +281,7 @@ function closeRoofPanel(){
 
 
 const modes=['need','roofs','scenarios'];
-const keys=['population','seifa','ndvi','lst','need','heat','equity','green','pop','candidates','scenario1','scenario2','scenario3'];
+const keys=['population','seifa','ndvi','lst','need','heat','equity','green','pop','candidates',...Object.keys(scenarioFiles).flatMap(f=>[1,2,3].map(i=>'scenario_'+f+'_'+i))];
 const focusKeys={balanced:'need',heat:'heat',equity:'equity',green:'green',pop:'pop'};
 const scenarioInfo={
   scenario1:['Scenario 1 — Priority','Very High priority areas only.'],
@@ -287,11 +305,11 @@ function li(color,label){return `<div class="legend-item"><span class="swatch" s
 function updateMapContext(){
  const el=document.getElementById('mapContext');if(!el)return;
  if(currentMode==='roofs')el.textContent=(currentFocus==='balanced'?'Original rooftop screening priority':cfg[focusKeys[currentFocus]].title)+' · candidate rooftops';
- else if(currentMode==='scenarios')el.textContent='Scenario '+currentScenario+' · modelled cooling';
+ else if(currentMode==='scenarios')el.textContent=focusNames[currentFocus]+' · Scenario '+currentScenario+' · modelled surface cooling';
  else el.textContent=(cfg[currentNeedKey()]?.title||'Cooling need')+' · 250 m grid';
 }
 function updateLegend(){
- const key=currentMode==='roofs'?'candidates':currentMode==='scenarios'?'scenario'+currentScenario:currentNeedKey();
+ const key=currentMode==='roofs'?'candidates':currentMode==='scenarios'?currentScenarioKey():currentNeedKey();
  const el=document.getElementById('legend');
  if(key==='candidates'){
     if(currentFocus==='balanced'){
@@ -302,7 +320,7 @@ function updateLegend(){
         cfg.need.palette.map((color,i)=>li(color,(i+1)+(i===0?' — Low':i===4?' — High':''))).join('')+
         li('#abb5b0','Not assessed')+li('#92999c','Incomplete data');
     }
- }else if(key.startsWith('scenario')){
+ }else if(cfg[key]?.kind==='scenario'){
     el.innerHTML='<div class="legend-title">'+esc(cfg[key].title)+'</div><div class="legend-subtitle">Modelled cooling (°C)</div>'+
       li('#d7e7fb','&lt;1.0')+li('#a4c8f0','1.0–&lt;1.8')+li('#6a9cdb','1.8–&lt;2.6')+li('#2767b3','2.6–&lt;3.4')+li('#103e86','≥3.4')+li('#aab2b8','No modelled value');
  }else if(cfg[key].kind==='weighted'){
@@ -318,13 +336,20 @@ function updateLegend(){
 }
 function updateScenarioMetrics(data){
   const items=Array.isArray(data?.features)?data.features:[];
-  const vals=items.map(f=>first(f.properties||{},['cooling_C','Cooling_C','cooling_c']))
-    .filter(v=>v!==null&&v!==undefined&&v!=='')
-    .map(Number).filter(Number.isFinite);
+  const coolValues=items.map(f=>first(f.properties||{},['cooling_C','Cooling_C','cooling_c']))
+    .filter(v=>v!==null&&v!==undefined&&v!=='').map(Number).filter(v=>Number.isFinite(v)&&v>0);
+  const changes=items.map(f=>{
+    const p=f.properties||{};
+    const before=first(p,['LST_mean']);
+    const after=first(p,['scenario_LST']);
+    if(before===null||after===null)return null;
+    const b=Number(before),a=Number(after);
+    return Number.isFinite(b)&&Number.isFinite(a)?b-a:null;
+  }).filter(v=>v!==null);
   const fmtN=new Intl.NumberFormat('en-AU');
   document.getElementById('scenarioCells').textContent=fmtN.format(items.length);
-  document.getElementById('scenarioModelled').textContent=fmtN.format(vals.length);
-  document.getElementById('scenarioMean').textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)+' °C':'Not available';
+  document.getElementById('scenarioModelled').textContent=fmtN.format(coolValues.length);
+  document.getElementById('scenarioMean').textContent=changes.length?(changes.reduce((a,b)=>a+b,0)/changes.length).toFixed(3)+' °C':'Not available';
 }
 function setModeUi(){
  updateMapContext();
@@ -337,17 +362,18 @@ function setModeUi(){
    if(selected)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');
  });
  document.getElementById('focusSelector').classList.toggle('hidden',currentFactor!=='need');
- document.querySelectorAll('input[name=roofFocus]').forEach(el=>el.checked=el.value===currentFocus);
+ document.querySelectorAll('input[name=roofFocus], input[name=scenarioFocus]').forEach(el=>el.checked=el.value===currentFocus);
  const key='scenario'+currentScenario;
  document.getElementById('scenarioSlider').value=currentScenario;
- document.getElementById('scenarioTitle').textContent=scenarioInfo[key][0];
+ document.getElementById('scenarioTitle').textContent=focusNames[currentFocus]+' · '+scenarioInfo[key][0];
  document.getElementById('scenarioHelp').textContent=scenarioInfo[key][1];
 }
 async function renderMode(){
  const seq=++requestVersion;
  keys.forEach(remove);
  closeRoofPanel();
- const key=currentMode==='need'?currentNeedKey():currentMode==='roofs'?'candidates':'scenario'+currentScenario;
+ const key=currentMode==='need'?currentNeedKey():currentMode==='roofs'?'candidates':currentScenarioKey();
+ if(currentMode==='scenarios')clearScenarioMetrics();
  updateLegend();
  try{
    const target=await ensure(key);
@@ -391,6 +417,12 @@ document.querySelectorAll('input[name=roofFocus]').forEach(el=>el.addEventListen
  currentFocus=el.value;
  document.querySelectorAll('input[name=focus]').forEach(item=>item.checked=item.value===currentFocus);
  restyleRoofs();updateMapContext();updateLegend();
+}));
+document.querySelectorAll('input[name=scenarioFocus]').forEach(el=>el.addEventListener('change',()=>{
+ if(!el.checked)return;
+ currentFocus=el.value;
+ document.querySelectorAll('input[name=focus],input[name=roofFocus]').forEach(item=>item.checked=item.value===currentFocus);
+ setModeUi();renderMode();
 }));
 document.getElementById('scenarioSlider').addEventListener('input',e=>{
  currentScenario=Number(e.target.value);setModeUi();renderMode();
