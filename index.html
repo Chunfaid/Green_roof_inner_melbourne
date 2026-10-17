@@ -158,11 +158,20 @@
 <div id="aboutModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="aboutHeading">
   <div class="modal-card">
     <button id="closeAbout" type="button" aria-label="Close methodology">×</button>
-    <div class="eyebrow">About the prototype</div>
-    <h2 id="aboutHeading">About the Green Roof Explorer</h2>
-    <p>For planners: first identify neighbourhoods with greater cooling need, then shortlist rooftop candidates and compare progressively broader implementation scenarios.</p><p>The neighbourhood need analysis uses 250 m × 250 m grid cells. Candidate roofs are shown at building scale. Population, SEIFA IRSD, NDVI and surface temperature inform the combined need score.</p>
-    <h3>Who could use this?</h3><p>Local government planners and other stakeholders can explore relative neighbourhood cooling need, shortlist candidate sites and examine illustrative implementation options. The tool does not grant approvals or determine final project feasibility.</p><h3>Data interpretation</h3><p>All need indicators are presented as relative scores. The 250 m grid summarises neighbourhood conditions; individual rooftop boundaries are a separate screening output. The exact source dates, classification validation and model sensitivity should be checked against the project documentation before decisions are made.</p><h3>Responsible use</h3><p>Roof screening may be incomplete or misclassified. Building structure, access, planning controls, ownership, drainage, waterproofing and costs require independent checks. Modelled cooling outcomes are illustrative and should not be treated as measured local changes.</p>
-    <div class="modal-note"><strong>Scenario outputs:</strong> cooling is illustrative and literature-derived, not a calibrated prediction of future local air temperature.</div>
+    <div class="eyebrow">METHOD AND LIMITATIONS</div>
+    <h2 id="aboutHeading">How the green-roof map works</h2>
+    <p>This planning prototype links neighbourhood cooling need, screened rooftop opportunities, and illustrative implementation scenarios for Inner Melbourne.</p>
+    <h3>1. Identify cooling need</h3>
+    <p>Population density, SEIFA socioeconomic vulnerability, NDVI vegetation need, and land surface temperature are assessed on a nominal 250 m grid. Balanced uses the original combined score. Alternative planning focuses assign 40% weight to a selected indicator and 20% to each other indicator.</p>
+    <h3>2. Prioritise candidate roofs</h3>
+    <p>Screened candidate rooftops combine a neighbourhood need score with an area score. Scenario 1 selects scores ≥4.5 (Very High); Scenario 2 selects ≥4.0 (High and Very High); Scenario 3 selects ≥3.0 (Moderate and above). Different planning focuses result in different selected rooftops.</p>
+    <h3>3. Estimate potential cooling</h3>
+    <p>Selected rooftop geometry is dissolved to avoid double-counting, intersected with grid cells, and summed by cell. The model uses selected rooftop area divided by a nominal 62,500 m² cell area. Below 30% coverage, the model provides no cooling estimate. Between 30% and 90%, estimated cooling rises linearly from 1.0 °C to 3.8 °C; above 90% it is capped at 3.8 °C.</p>
+    <h3>4. Interpret comparisons</h3>
+    <p>The scenario chart counts 250 m grid cells with a positive modelled reduction. Average temperature drop is calculated only across affected cells, not over the entire study area. The outcomes describe illustrative land-surface temperature changes, not measured changes in air temperature.</p>
+    <h3>Limitations</h3>
+    <p>Roof screening and available elevation/roof information are incomplete. Structural capacity, drainage, waterproofing, ownership, cost and access need independent verification. Cooling coefficients, weights, thresholds and fixed cell-area assumptions introduce uncertainty. The map does not establish site feasibility or guarantee cooling.</p>
+    <div class="modal-note"><strong>Documentation:</strong> See the repository README for input filenames, field names, formulas and processing steps.</div>
   </div>
 </div>
 
