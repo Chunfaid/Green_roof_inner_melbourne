@@ -398,3 +398,21 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
 .need-guide .indicator-options label{padding:11px 9px}
 .need-guide .indicator-explorer summary:hover,.need-guide .combined-need-choice:hover{background:#f0f7f2}
 .need-guide .indicator-explorer[open] .indicator-options{max-height:220px;overflow-y:auto}
+
+/* Reference-inspired right-hand selector: A/B hierarchy, aligned radio rows, no preamble. */
+.need-guide .need-map-choice{display:block;margin-top:14px}
+.need-guide .need-choice-heading{display:flex;align-items:center;gap:10px;margin:0 0 8px;font-size:12px}
+.need-guide .need-choice-number{width:23px;height:23px;flex:0 0 23px;font-size:11px;border-radius:7px}
+.need-guide .combined-need-choice{margin:0 0 14px 11px;border:0;box-shadow:none;min-height:62px;padding:12px 13px}
+.need-guide .combined-need-choice:has(input:checked){background:#e7f3eb;box-shadow:none;border:0}
+.need-guide .indicator-explorer{margin-top:0;border:0;background:transparent;min-height:0;box-shadow:none!important;overflow:visible}
+.need-guide .indicator-explorer summary{display:flex;gap:11px;min-height:0;padding:7px 0 11px;background:transparent!important;align-items:center}
+.need-guide .indicator-explorer summary strong{font-size:12.5px}
+.need-guide .indicator-explorer summary small{margin-top:2px}
+.need-guide .indicator-chevron{margin-left:auto}
+.need-guide .indicator-options{border:0;padding:0 0 0 12px;gap:3px;max-height:none}
+.need-guide .indicator-explorer[open] .indicator-options{max-height:230px;overflow-y:auto}
+.need-guide .indicator-options label{padding:11px 12px;gap:11px;min-height:57px}
+.need-guide .indicator-options label:has(input:checked){background:#e4f1e8}
+.need-guide .indicator-explorer:has(input:checked)>summary{background:transparent}
+.need-guide .combined-need-choice:hover,.need-guide .indicator-options label:hover{background:#f0f7f2}
