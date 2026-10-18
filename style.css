@@ -375,3 +375,7 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
   .intro-title{font-size:27px}
   .mode-tab{padding:13px 6px}
 }
+
+/* Slightly stronger introduction headline while retaining map-first sidebar width. */
+@media(min-width:1181px){.intro-title{font-size:34px;line-height:1.12;letter-spacing:-.9px}}
+@media(min-width:901px) and (max-width:1180px){.intro-title{font-size:30px;line-height:1.14}}
