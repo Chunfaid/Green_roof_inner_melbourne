@@ -6,7 +6,7 @@
   <meta name="description" content="Green Roof Implementation Support Map for Inner Melbourne">
   <title>Green Roof Implementation Support Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=largerIntro20261018">
+  <link rel="stylesheet" href="style.css?v=compactGuide20261018">
 </head>
 <body>
 <header class="topbar">
@@ -106,22 +106,22 @@
 
     <aside id="needGuide" class="need-guide" aria-label="Cooling need methodology">
       <div class="need-guide-heading"><span class="eyebrow">UNDERSTANDING THE MAP</span><strong>Why are areas prioritised?</strong></div>
-      <p>Choose the map to display, then compare prioritisation methods using the left sidebar.</p>
-      <p><strong>Choose the map you want to see.</strong> The combined map is the main planning result. Individual indicators help explain why an area is prioritised.</p>
-      <div class="need-map-choice">
-        <div class="need-choice-heading"><span class="need-choice-number">A</span><strong>Priority map</strong><small>Recommended starting point</small></div>
-        <label class="combined-need-choice"><input type="radio" name="factor" value="need" checked><span><strong>Combined intervention need</strong><small>All four indicators combined into one priority score</small></span></label>
+      <p class="need-guide-intro">Select a map layer. Use the left sidebar to change the planning focus.</p>
+      <div class="need-map-choice" role="group" aria-label="Cooling need map layers">
+        <label class="combined-need-choice">
+          <input type="radio" name="factor" value="need" checked>
+          <span><strong>Combined intervention need</strong><small>Overall priority score from four indicators</small></span>
+        </label>
         <details class="indicator-explorer" id="indicatorExplorer">
-          <summary><span class="need-choice-number">B</span><span><strong>Explore individual indicators</strong><small>Inspect one input at a time — not a separate planning focus</small></span><span class="indicator-chevron" aria-hidden="true">▾</span></summary>
+          <summary><span><strong>Individual indicators</strong><small>View each factor separately</small></span><span class="indicator-chevron" aria-hidden="true">▾</span></summary>
           <div class="indicator-options" role="group" aria-label="Individual input indicator maps">
-            <label><input type="radio" name="factor" value="population"><span><strong>Population density</strong><small>Where more people may be exposed</small></span></label>
-            <label><input type="radio" name="factor" value="seifa"><span><strong>Socioeconomic vulnerability</strong><small>SEIFA disadvantage indicator</small></span></label>
-            <label><input type="radio" name="factor" value="ndvi"><span><strong>Vegetation need</strong><small>Lower greenness based on NDVI</small></span></label>
-            <label><input type="radio" name="factor" value="lst"><span><strong>Land surface temperature</strong><small>Areas with hotter surface conditions</small></span></label>
+            <label><input type="radio" name="factor" value="population"><span><strong>Population density</strong><small>Potential population exposure</small></span></label>
+            <label><input type="radio" name="factor" value="seifa"><span><strong>Socioeconomic vulnerability</strong><small>SEIFA disadvantage</small></span></label>
+            <label><input type="radio" name="factor" value="ndvi"><span><strong>Vegetation need</strong><small>NDVI greenness</small></span></label>
+            <label><input type="radio" name="factor" value="lst"><span><strong>Land surface temperature</strong><small>Surface heat</small></span></label>
           </div>
         </details>
       </div>
-      <p>The map combines four indicators into a neighbourhood cooling-need score. Darker cells indicate higher relative need for intervention.</p>
       <details><summary>How is cooling need assessed?</summary><p>The four inputs are population density, socioeconomic disadvantage (SEIFA IRSD), vegetation need (NDVI), and land surface temperature. Individual indicator maps show each input separately.</p></details>
       <details><summary>Why a 250 m grid?</summary><p>Each 250 m × 250 m cell summarises neighbourhood-scale conditions consistently. Conditions may vary within a cell, so rooftop polygons are assessed separately.</p></details>
       <p class="need-guide-foot">These are relative priority scores, not direct temperature predictions.</p>
