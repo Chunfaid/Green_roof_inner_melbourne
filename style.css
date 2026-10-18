@@ -354,3 +354,24 @@ button:focus-visible,summary:focus-visible{outline:3px solid #d4a34c;outline-off
  .intro-title{font-size:30px}
  .mode-tab{padding:14px 6px}
 }
+
+/* Map-first desktop balance: reclaim map width without sacrificing readability. */
+@media(min-width:1181px){
+  .layout{grid-template-columns:350px minmax(0,1fr)}
+  .sidebar{padding:14px}
+  .workflow-card,.mode-panel{padding:23px}
+  .intro-title{font-size:30px;line-height:1.16;letter-spacing:-.65px;margin:11px 0 13px}
+  .workflow-card p{font-size:13px;line-height:1.55}
+  .mode-panel>p{font-size:12.5px}
+  .mode-tab{padding:16px 9px;min-height:72px}
+  .focus-selector{padding:16px}
+  .focus-options label{padding:11px 8px;min-height:60px;font-size:12px}
+  .focus-options small{font-size:10px}
+}
+@media(min-width:901px) and (max-width:1180px){
+  .layout{grid-template-columns:330px minmax(0,1fr)}
+  .sidebar{padding:12px}
+  .workflow-card,.mode-panel{padding:19px}
+  .intro-title{font-size:27px}
+  .mode-tab{padding:13px 6px}
+}
