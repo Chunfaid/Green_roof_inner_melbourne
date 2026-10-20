@@ -6,7 +6,7 @@ Record **data releases and model changes** separately from CSS-only changes. Thi
 
 - Added maintenance and re-run trigger guidance, field dictionary and a scenario validation utility.
 - Linked the original GIS project Google Drive folder from GitHub documentation and the website's methodology dialog.
-- These changes do **not** regenerate GIS outputs, change the cooling model or establish ongoing third-party maintenance.
+- Archived a QGIS/PyQGIS scenario-processing reference script; anonymous Drive access and complete data-validation checks remain unverified.\n- These changes do **not** regenerate GIS outputs, change the cooling model or establish ongoing third-party maintenance.
 
 ## Future release template
 
