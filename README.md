@@ -12,7 +12,7 @@ An interactive, exploratory spatial decision-support map for prioritising potent
 - **Change/release log:** [CHANGELOG.md](CHANGELOG.md) — future update template.
 - **Repeatable scenario checks:** `python3 scripts/validate_outputs.py` — tests published outputs and reports errors; these do **not** substitute for spatial or scientific validation.
 
-**Maintenance status:** This repository hosts precomputed datasets. The website does not automatically refresh from Google Drive or data providers. Any long-term operational use needs an assigned maintainer, permissions to original files, approved refresh schedule and review of GIS processing steps that are still manual.
+**Maintenance status:** The available [PyQGIS scenario batch script](scripts/batch_greenroof_scenarios.py) is now archived (partial pipeline); a complete 15-scenario validation run and Google Drive anonymous-access check remain pending. This repository hosts precomputed datasets. The website does not automatically refresh from Google Drive or data providers. Any long-term operational use needs an assigned maintainer, permissions to original files, approved refresh schedule and review of GIS processing steps that are still manual.
 
 ## Use the map
 
