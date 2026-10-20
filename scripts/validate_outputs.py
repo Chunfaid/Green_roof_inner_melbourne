@@ -36,7 +36,7 @@ def test_file(path, errors, warnings):
         errors.append(f"{path.name}: cannot load JSON ({exc})")
         return None
     features = collection.get("features") if isinstance(collection, dict) else None
-    if collection.get("type") != "FeatureCollection" or not isinstance(features, list):
+    if not isinstance(collection, dict) or collection.get("type") != "FeatureCollection" or not isinstance(features, list):
         errors.append(f"{path.name}: must be a GeoJSON FeatureCollection")
         return None
     if not features:
