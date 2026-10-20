@@ -4,6 +4,16 @@
 
 An interactive, exploratory spatial decision-support map for prioritising potential green-roof interventions across the Inner Melbourne study area. This prototype supports planning investigation; it does **not** establish rooftop engineering feasibility or predict measured neighbourhood air-temperature changes.
 
+## Project files, maintenance and handover
+
+- **Original QGIS/working files:** [Google Drive project archive](https://drive.google.com/drive/folders/1RLLwQCqrKRfBHzgTp6HNHYdhkORR0K4Q) — intended for download of original project materials; availability depends on Google Drive sharing permissions and archive contents.
+- **Operational handover:** [MAINTENANCE.md](MAINTENANCE.md) — ownership, update triggers, rerun process, QA, deployment, fallback and sustainability risks.
+- **Data dictionary:** [DATA_DICTIONARY.md](DATA_DICTIONARY.md) — fields, units, data conventions and input/output contract.
+- **Change/release log:** [CHANGELOG.md](CHANGELOG.md) — future update template.
+- **Repeatable scenario checks:** `python3 scripts/validate_outputs.py` — tests published outputs and reports errors; these do **not** substitute for spatial or scientific validation.
+
+**Maintenance status:** This repository hosts precomputed datasets. The website does not automatically refresh from Google Drive or data providers. Any long-term operational use needs an assigned maintainer, permissions to original files, approved refresh schedule and review of GIS processing steps that are still manual.
+
 ## Use the map
 
 1. **Cooling need:** review the combined priority map or its four contributing indicators. Select one of five weighting approaches.
